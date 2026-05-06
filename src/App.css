@@ -527,11 +527,11 @@
   }
 
   50% {
-    transform: translateX(-82vw) translateY(-18px) rotate(calc(var(--bubble-tilt) * 0.45));
+    transform: translateX(calc(-82vw - var(--bubble-size) * 0.35)) translateY(-18px) rotate(calc(var(--bubble-tilt) * 0.45));
   }
 
   to {
-    transform: translateX(calc(-180vw - 520px)) translateY(12px) rotate(calc(var(--bubble-tilt) * 1.15));
+    transform: translateX(calc(-220vw - var(--bubble-size) * 1.4)) translateY(12px) rotate(calc(var(--bubble-tilt) * 1.15));
   }
 }
 
