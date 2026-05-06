@@ -1459,7 +1459,10 @@
 
 :root[data-theme='dark'] .hero__visual,
 :root[data-theme='dark'] .work-card__media,
-:root[data-theme='dark'] .work-detail__visual {
+:root[data-theme='dark'] .work-detail__visual,
+:root[data-theme='dark'] .work-media__slide,
+:root[data-theme='dark'] .work-media__slide img,
+:root[data-theme='dark'] .work-media__thumbs button {
   background:
     linear-gradient(140deg, rgba(255, 255, 255, 0.08), transparent 40%),
     #111c2e;
