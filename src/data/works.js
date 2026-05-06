@@ -489,6 +489,7 @@ export const works = [
     dateLabel: '2023 - 2024',
     sortDate: '2024-12-31',
     recommendedRank: 10,
+    coverImage: youtubeThumbnail('b5Gy-ha_Zb4'),
     media: {
       embeds: [
         {
