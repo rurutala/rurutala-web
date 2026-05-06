@@ -79,9 +79,9 @@ export function HomePage({ navigate }) {
   const heroBubbles = openingWorks.map((work, index) => ({
     work,
     size: [420, 260, 560, 320, 210, 500, 280, 720][index],
-    top: [-15, 75, -5, 85, -10, 60, 95, -20][index],
+    top: [-15, 75, -5, 65, -7, 60, 40, -17][index],
     left: [104, 126, 150, 176, 204, 234, 266, 330][index],
-    duration: [30, 38, 36, 42, 28, 40, 34, 52][index],
+    duration: [40, 58, 36, 52, 28, 30, 44, 55][index],
     delay: [-2, -9, -16, -23, -5, -30, -12, -32.5][index],
     exit: ['-220vw', '-220vw', '-220vw', '-220vw', '-220vw', '-220vw', '-220vw', '-430vw'][index],
     tilt: [-16, 14, -12, 18, -14, 12, -18, 16][index],
@@ -128,7 +128,7 @@ export function HomePage({ navigate }) {
               <br />
                豊かに
             </h1>
-          </div>
+        </div>
         </div>
       </section>
 

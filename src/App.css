@@ -1794,8 +1794,15 @@
   }
 
   .hero__stage::before {
+    display: block;
     background:
-      linear-gradient(180deg, var(--surface) 0%, rgba(255, 255, 255, 0.82) 38%, transparent 72%);
+      linear-gradient(180deg, rgba(255, 255, 255, 0.38) 0%, transparent 48%),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.42) 0%, transparent 58%);
+  }
+
+  .hero__stage::after {
+    display: block;
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.24), transparent);
   }
 
   .hero__content {
@@ -1815,7 +1822,11 @@
   }
 
   .hero__bubble {
-    width: calc(var(--bubble-size) * 0.64);
+    width: calc(var(--bubble-size) * 0.44);
+  }
+
+  .hero__bubble:nth-child(8) {
+    top: calc(var(--bubble-top) + 18%);
   }
 
   .button {
