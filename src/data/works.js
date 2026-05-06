@@ -139,7 +139,7 @@ export const works = [
     publishedAt: '2026-01-31',
     dateLabel: '2025/7/ ~ 2025/1',
     sortDate: '2026-01-31',
-    recommendedRank: 100,
+    recommendedRank: 230,
     links: [{ label: '作品ページ(UnityRoom)', href: 'https://unityroom.com/games/colorconnect' }],
     media: {
       images: [
@@ -168,7 +168,7 @@ export const works = [
     publishedAt: '2024-12-31',
     dateLabel: '2024',
     sortDate: '2024-12-31',
-    recommendedRank: 98,
+    recommendedRank: 60,
     media: {
       images: [
         asset('LIVE2D/minamoruav2.webp'),
@@ -189,7 +189,7 @@ export const works = [
     publishedAt: '2025-02-28',
     dateLabel: '2025/2',
     sortDate: '2025-02-28',
-    recommendedRank: 96,
+    recommendedRank: 180,
     media: {
       images: [
         asset('3DCG/minamorua_3d1.webp'),
@@ -209,7 +209,7 @@ export const works = [
     publishedAt: '2024-09-06',
     dateLabel: '2024/9/2 ~ 9/6',
     sortDate: '2024-09-06',
-    recommendedRank: 94,
+    recommendedRank: 70,
     links: [
       { label: 'リポジトリ(NoAsset)', href: 'https://github.com/rurutala/eruption_noasset' },
       {
@@ -239,7 +239,7 @@ export const works = [
     publishedAt: '2024-10-31',
     dateLabel: '2024/8/ ~ 10/31',
     sortDate: '2024-10-31',
-    recommendedRank: 92,
+    recommendedRank: 110,
     links: [{ label: '作品ページ(UnityRoom)', href: 'https://unityroom.com/games/notesknights' }],
     media: {
       images: [
@@ -262,7 +262,7 @@ export const works = [
     publishedAt: '2025-05-11',
     dateLabel: '2025/4/14 ~ 5/11',
     sortDate: '2025-05-11',
-    recommendedRank: 90,
+    recommendedRank: 220,
     links: [{ label: '作品ページ(UnityRoom)', href: 'https://unityroom.com/games/deainder' }],
     media: {
       images: [
@@ -282,7 +282,7 @@ export const works = [
     publishedAt: '2023-12-31',
     dateLabel: '2023',
     sortDate: '2023-12-31',
-    recommendedRank: 88,
+    recommendedRank: 50,
     links: [{ label: '作品ページ(UnityRoom)', href: 'https://unityroom.com/games/dango' }],
     media: {
       images: [
@@ -302,7 +302,7 @@ export const works = [
     publishedAt: '2024-08-31',
     dateLabel: '2024/8',
     sortDate: '2024-08-31',
-    recommendedRank: 86,
+    recommendedRank: 30,
     links: [{ label: '作品ページ(UnityRoom)', href: 'https://unityroom.com/games/fruitsamurai' }],
     media: {
       images: [
@@ -325,7 +325,7 @@ export const works = [
     publishedAt: '2024-12-28',
     dateLabel: '2024/12/26 ~ 28',
     sortDate: '2024-12-28',
-    recommendedRank: 84,
+    recommendedRank: 40,
     links: [{ label: '作品ページ(UnityRoom)', href: 'https://unityroom.com/games/sweetsbang' }],
     media: {
       images: [
@@ -346,7 +346,7 @@ export const works = [
     publishedAt: '2024-11-03',
     dateLabel: '2024/11/1 ~ 3',
     sortDate: '2024-11-03',
-    recommendedRank: 82,
+    recommendedRank: 20,
     links: [{ label: '作品ページ(UnityRoom)', href: 'https://unityroom.com/games/magicmagic' }],
     media: {
       images: [
@@ -388,7 +388,7 @@ export const works = [
     publishedAt: '2025-12-28',
     dateLabel: '2025/12/25 ~ 12/28',
     sortDate: '2025-12-28',
-    recommendedRank: 78,
+    recommendedRank: 190,
     media: {
       images: [
         asset('PG/PG_SAITYOU/saityou0.webp'),
@@ -406,7 +406,7 @@ export const works = [
     publishedAt: '2025-11-13',
     dateLabel: '2025/11/3 ~ 11/13',
     sortDate: '2025-11-13',
-    recommendedRank: 76,
+    recommendedRank: 90,
     media: { images: [] },
     sections: templates.pg,
   }),
@@ -419,7 +419,7 @@ export const works = [
     publishedAt: '2024-08-31',
     dateLabel: '2024/8',
     sortDate: '2024-08-31',
-    recommendedRank: 74,
+    recommendedRank: 140,
     links: [{ label: 'MV企画(Youtube)', href: 'https://youtu.be/nykxaC50U1s?si=8Pb9v0Ybq6LzLO2a&t=1699' }],
     media: {
       audio: [{ title: '風宿る洞穴', src: asset('MUSIC/douketu.wav') }],
@@ -435,7 +435,7 @@ export const works = [
     publishedAt: '2025-03-03',
     dateLabel: '2025/3/2 ~ 3/3',
     sortDate: '2025-03-03',
-    recommendedRank: 72,
+    recommendedRank: 130,
     media: {
       audio: [
         {
@@ -455,7 +455,7 @@ export const works = [
     publishedAt: '2024-12-31',
     dateLabel: '2023 - 2024',
     sortDate: '2024-12-31',
-    recommendedRank: 71,
+    recommendedRank: 10,
     media: {
       embeds: [
         {
@@ -475,7 +475,7 @@ export const works = [
     publishedAt: '2025-05-11',
     dateLabel: '2025/4/ ~ 5/11',
     sortDate: '2025-05-11',
-    recommendedRank: 69,
+    recommendedRank: 170,
     media: {
       embeds: [
         {
@@ -495,7 +495,7 @@ export const works = [
     publishedAt: '2025-12-31',
     dateLabel: '2024(後期) - 2025(後期)',
     sortDate: '2025-12-31',
-    recommendedRank: 70,
+    recommendedRank: 100,
     media: { images: [asset('ILLUST/ILLUST_EMA/raf.webp')] },
     sections: templates.illustration,
   }),
@@ -508,7 +508,7 @@ export const works = [
     publishedAt: '2025-12-31',
     dateLabel: '2024(後期) - 2025(後期)',
     sortDate: '2025-12-31',
-    recommendedRank: 68,
+    recommendedRank: 120,
     media: { images: [asset('ILLUST/ILLUST_LEUR/leur.webp')] },
     sections: templates.illustration,
   }),
@@ -521,7 +521,7 @@ export const works = [
     publishedAt: '2025-12-31',
     dateLabel: '2024(後期) - 2025(後期)',
     sortDate: '2025-12-31',
-    recommendedRank: 66,
+    recommendedRank: 150,
     media: { images: [asset('ILLUST/ILLUST_RUA_1/rua.webp')] },
     sections: templates.illustration,
   }),
@@ -534,7 +534,7 @@ export const works = [
     publishedAt: '2025-12-31',
     dateLabel: '2024(後期) - 2025(後期)',
     sortDate: '2025-12-31',
-    recommendedRank: 64,
+    recommendedRank: 160,
     media: { images: [asset('ILLUST/ILLUST_RUA_2/rua.webp')] },
     sections: templates.illustration,
   }),
@@ -547,7 +547,7 @@ export const works = [
     publishedAt: '2025-12-31',
     dateLabel: '2024(後期) - 2025(後期)',
     sortDate: '2025-12-31',
-    recommendedRank: 62,
+    recommendedRank: 210,
     media: { images: [asset('ILLUST/ILLUST_RURUNE/rurune.webp')] },
     sections: templates.illustration,
   }),
@@ -560,7 +560,7 @@ export const works = [
     publishedAt: '2025-12-31',
     dateLabel: '2024(後期) - 2025(後期)',
     sortDate: '2025-12-31',
-    recommendedRank: 60,
+    recommendedRank: 200,
     media: { images: [asset('ILLUST/ILLUST_THEHOLE/thehole.webp')] },
     sections: templates.illustration,
   }),
