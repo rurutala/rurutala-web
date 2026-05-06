@@ -1445,6 +1445,18 @@
   box-shadow: 0 0 0 3px rgba(125, 217, 236, 0.18);
 }
 
+:root[data-theme='dark'] .profile-social img {
+  filter: brightness(0) invert(1);
+}
+
+:root[data-theme='dark'] .profile-social a:hover {
+  color: var(--text-strong);
+}
+
+:root[data-theme='dark'] .profile-social a:hover img {
+  filter: brightness(0) saturate(100%) invert(82%) sepia(46%) saturate(588%) hue-rotate(156deg) brightness(101%) contrast(87%);
+}
+
 :root[data-theme='dark'] .hero__visual,
 :root[data-theme='dark'] .work-card__media,
 :root[data-theme='dark'] .work-detail__visual {
