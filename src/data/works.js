@@ -1,6 +1,7 @@
 import heroImg from '../assets/hero.webp'
 
 const asset = (path) => `/assets/${path}`
+const youtubeThumbnail = (videoId) => `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
 
 export const workTags = ['PG', 'イラスト', 'DTM', 'Movie', 'Live2D', '3DCG']
 
@@ -105,12 +106,14 @@ function createWork({
   dateLabel,
   sortDate,
   recommendedRank,
+  coverImage,
   coverImagePosition = 'center',
   links = [],
   media = {},
   sections,
 }) {
   const firstImage = media.images?.[0]
+  const firstVideoPoster = media.videos?.find((video) => video.poster)?.poster
 
   return {
     id,
@@ -123,7 +126,7 @@ function createWork({
     dateLabel,
     sortDate,
     recommendedRank,
-    coverImage: firstImage || heroImg,
+    coverImage: coverImage || firstImage || firstVideoPoster || heroImg,
     coverImagePosition,
     links,
     sections,
@@ -247,6 +250,7 @@ export const works = [
     links: [{ label: '作品ページ(UnityRoom)', href: 'https://unityroom.com/games/notesknights' }],
     media: {
       images: [
+        asset('PG/PG_NOTESKNIGHTS/notesknights0.png'),
         asset('PG/PG_NOTESKNIGHTS/notesknights1.webp'),
         asset('PG/PG_NOTESKNIGHTS/notesknights2.webp'),
         asset('PG/PG_NOTESKNIGHTS/notesknights3.webp'),
@@ -270,6 +274,7 @@ export const works = [
     links: [{ label: '作品ページ(UnityRoom)', href: 'https://unityroom.com/games/deainder' }],
     media: {
       images: [
+        asset('PG/PG_DEAIINDER/deainder0.png'),
         asset('PG/PG_DEAIINDER/deainder1.webp'),
         asset('PG/PG_DEAIINDER/deainder2.webp'),
         asset('PG/PG_DEAIINDER/deainder3.webp'),
@@ -398,6 +403,14 @@ export const works = [
         asset('PG/PG_SAITYOU/saityou0.webp'),
         asset('PG/PG_SAITYOU/saityou1.webp'),
       ],
+      videos: [
+        {
+          title: '世界最長の勇者パーティは数の暴力で魔王を撃退するようです',
+          src: asset('PG/PG_SAITYOU/saityou.mkv'),
+          type: 'video/x-matroska',
+          poster: asset('PG/PG_SAITYOU/saityou0.webp'),
+        },
+      ],
     },
     sections: templates.pg,
   }),
@@ -411,7 +424,18 @@ export const works = [
     dateLabel: '2025/11/3 ~ 11/13',
     sortDate: '2025-11-13',
     recommendedRank: 90,
-    media: { images: [] },
+    coverImage: asset('PG/PG_DOUBLECROSS/doublecross2.png'),
+    media: {
+      images: [asset('PG/PG_DOUBLECROSS/doublecross2.png')],
+      videos: [
+        {
+          title: 'ダブルクロス',
+          src: asset('PG/PG_DOUBLECROSS/doublecross.mp4'),
+          type: 'video/mp4',
+          poster: asset('PG/PG_DOUBLECROSS/doublecross2.png'),
+        },
+      ],
+    },
     sections: templates.pg,
   }),
   createWork({
@@ -424,8 +448,15 @@ export const works = [
     dateLabel: '2024/8',
     sortDate: '2024-08-31',
     recommendedRank: 140,
+    coverImage: youtubeThumbnail('nykxaC50U1s'),
     links: [{ label: 'MV企画(Youtube)', href: 'https://youtu.be/nykxaC50U1s?si=8Pb9v0Ybq6LzLO2a&t=1699' }],
     media: {
+      embeds: [
+        {
+          title: '風宿る洞穴 MV企画',
+          src: 'https://www.youtube.com/embed/nykxaC50U1s?si=8Pb9v0Ybq6LzLO2a&start=1699',
+        },
+      ],
       audio: [{ title: '風宿る洞穴', src: asset('MUSIC/douketu.wav') }],
     },
     sections: templates.music,
@@ -480,6 +511,7 @@ export const works = [
     dateLabel: '2025/4/ ~ 5/11',
     sortDate: '2025-05-11',
     recommendedRank: 170,
+    coverImage: youtubeThumbnail('69_7AFYwrMk'),
     media: {
       embeds: [
         {

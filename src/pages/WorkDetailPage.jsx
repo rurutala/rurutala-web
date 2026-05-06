@@ -15,6 +15,11 @@ export function WorkDetailPage({ work, navigate }) {
     )
   }
 
+  const hasVisualMedia =
+    (work.media?.images?.length ?? 0) > 0 ||
+    (work.media?.embeds?.length ?? 0) > 0 ||
+    (work.media?.videos?.length ?? 0) > 0
+
   return (
     <article className="work-detail">
       <AppLink className="back-link" href="/works" navigate={navigate}>
@@ -33,7 +38,7 @@ export function WorkDetailPage({ work, navigate }) {
         </div>
       </header>
 
-      {(work.media?.images?.length ?? 0) === 0 && (
+      {!hasVisualMedia && (
         <div className="work-detail__visual">
           <img
             src={work.coverImage}
