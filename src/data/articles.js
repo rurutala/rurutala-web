@@ -21,4 +21,6 @@ export const articles = [
   },
 ]
 
-export const featuredArticles = articles.slice(0, 3)
+export const featuredArticles = [...articles]
+  .sort((articleA, articleB) => articleB.recommendedRank - articleA.recommendedRank)
+  .slice(0, 3)

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+﻿import { useEffect, useMemo, useRef, useState } from 'react'
 import { articleTags, articles, featuredArticles } from './data/articles'
 import { featuredWorks, works, workTags } from './data/works'
 import './App.css'
@@ -17,6 +17,7 @@ const sortOptions = [
 ]
 
 const audioGraphByElement = new WeakMap()
+const recommendedWorks = [...works].sort((workA, workB) => workB.recommendedRank - workA.recommendedRank)
 
 function isHomePath() {
   return window.location.pathname === '/' || window.location.pathname === '/index.html'
@@ -251,19 +252,11 @@ function SiteFooter() {
 }
 
 function HomePage({ navigate }) {
-  const [openingWorks, setOpeningWorks] = useState(() => {
-    const shuffledWorks = [...works]
-
-    for (let index = shuffledWorks.length - 1; index > 0; index -= 1) {
-      const randomIndex = Math.floor(Math.random() * (index + 1))
-      ;[shuffledWorks[index], shuffledWorks[randomIndex]] = [shuffledWorks[randomIndex], shuffledWorks[index]]
-    }
-
-    return shuffledWorks.slice(0, 8)
-  })
+  const [openingWorks, setOpeningWorks] = useState(() => recommendedWorks.slice(0, 8))
   const [changingSlotIds, setChangingSlotIds] = useState([])
   const changingSlots = useRef(new Set())
   const transitionTimers = useRef([])
+  const nextOpeningWorkIndex = useRef(8)
 
   useEffect(() => {
     return () => {
@@ -286,8 +279,10 @@ function HomePage({ navigate }) {
             return work
           }
 
-          const candidates = works.filter((candidate) => candidate.id !== work.id)
-          return candidates[Math.floor(Math.random() * candidates.length)] || work
+          const nextWork = recommendedWorks[nextOpeningWorkIndex.current % recommendedWorks.length]
+          nextOpeningWorkIndex.current += 1
+
+          return nextWork || work
         }),
       )
     }, 220)
@@ -331,7 +326,11 @@ function HomePage({ navigate }) {
                   '--bubble-tilt': `${bubble.tilt}deg`,
                 }}
               >
-                <img src={bubble.work.coverImage} alt="" />
+                <img
+                  src={bubble.work.coverImage}
+                  alt=""
+                  style={{ objectPosition: bubble.work.coverImagePosition }}
+                />
                 <span>{bubble.work.title}</span>
               </AppLink>
             ))}
@@ -352,8 +351,8 @@ function HomePage({ navigate }) {
 
       <section className="work-preview" id="works" aria-labelledby="works-title">
         <div className="section-heading">
-          <p>Selected Works</p>
-          <h2 id="works-title">最近の作品</h2>
+          <p>Works</p>
+          <h2 id="works-title">作品</h2>
           <AppLink className="section-link" href="/works" navigate={navigate}>
             すべて見る
           </AppLink>
@@ -363,8 +362,8 @@ function HomePage({ navigate }) {
 
       <section className="work-preview" id="articles" aria-labelledby="articles-title">
         <div className="section-heading">
-          <p>Latest Articles</p>
-          <h2 id="articles-title">最近の記事</h2>
+          <p>Articles</p>
+          <h2 id="articles-title">記事</h2>
           <AppLink className="section-link" href="/articles" navigate={navigate}>
             すべて読む
           </AppLink>
@@ -450,7 +449,11 @@ function WorkGrid({ works: gridWorks, navigate }) {
       {gridWorks.map((work) => (
         <article className="work-card" key={work.id}>
           <AppLink className="work-card__media" href={`/works/${work.id}`} navigate={navigate}>
-            <img src={work.coverImage} alt="" />
+            <img
+              src={work.coverImage}
+              alt=""
+              style={{ objectPosition: work.coverImagePosition }}
+            />
           </AppLink>
           <div className="work-card__body">
             <div className="work-card__meta">
@@ -827,9 +830,13 @@ function AudioWorkPlayer({ children }) {
       canvasContext.globalCompositeOperation = 'screen'
       canvasContext.lineCap = 'round'
 
-      const themeRgb =
-        getComputedStyle(document.documentElement).getPropertyValue('--theme-rgb').trim() ||
-        '30, 47, 74'
+      const isDarkTheme = document.documentElement.dataset.theme === 'dark'
+      const spectrumRgb = isDarkTheme
+        ? '255, 255, 255'
+        : getComputedStyle(document.documentElement).getPropertyValue('--theme-rgb').trim() ||
+          '30, 47, 74'
+      const spectrumAlphaBase = isDarkTheme ? 0.014 : 0.018
+      const spectrumAlphaRange = isDarkTheme ? 0.09 : 0.11
 
       for (let column = 0; column < columns; column += 1) {
         const dataIndex = Math.floor((column / columns) * frequencyData.length)
@@ -838,7 +845,7 @@ function AudioWorkPlayer({ children }) {
         const height = Math.max(8, (strength * 0.74 + neighbor * 0.26) * window.innerHeight * 0.34)
         const x = column * gridSize
 
-        canvasContext.strokeStyle = `rgba(${themeRgb}, ${0.018 + strength * 0.11})`
+        canvasContext.strokeStyle = `rgba(${spectrumRgb}, ${spectrumAlphaBase + strength * spectrumAlphaRange})`
         canvasContext.lineWidth = 1 + strength * 1.4
         canvasContext.beginPath()
         canvasContext.moveTo(x, centerY - height)
@@ -937,7 +944,11 @@ function WorkDetailPage({ work, navigate }) {
 
       {(work.media?.images?.length ?? 0) === 0 && (
         <div className="work-detail__visual">
-          <img src={work.coverImage} alt="" />
+          <img
+            src={work.coverImage}
+            alt=""
+            style={{ objectPosition: work.coverImagePosition }}
+          />
         </div>
       )}
 
@@ -1136,6 +1147,13 @@ function ArticleDetailPage({ article, navigate }) {
 }
 
 function ProfilePage() {
+  const [profileHearts, setProfileHearts] = useState([])
+  const profileSwipeRef = useRef({
+    lastDirection: 0,
+    lastSpawnedAt: 0,
+    lastX: null,
+    turns: 0,
+  })
   const toolGroups = [
     {
       title: 'Programming',
@@ -1172,11 +1190,90 @@ function ProfilePage() {
     },
   ]
 
+  const spawnProfileHeart = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect()
+    const id = `${Date.now()}-${Math.random()}`
+    const x = event.clientX - rect.left
+    const y = event.clientY - rect.top
+
+    setProfileHearts((currentHearts) => [
+      ...currentHearts,
+      {
+        drift: (Math.random() - 0.5) * 34,
+        id,
+        scale: 0.86 + Math.random() * 0.34,
+        x,
+        y,
+      },
+    ])
+
+    window.setTimeout(() => {
+      setProfileHearts((currentHearts) => currentHearts.filter((heart) => heart.id !== id))
+    }, 1100)
+  }
+
+  const handleProfileIconPointerMove = (event) => {
+    const swipe = profileSwipeRef.current
+
+    if (swipe.lastX === null) {
+      swipe.lastX = event.clientX
+      return
+    }
+
+    const deltaX = event.clientX - swipe.lastX
+
+    if (Math.abs(deltaX) < 8) {
+      return
+    }
+
+    const nextDirection = Math.sign(deltaX)
+
+    if (swipe.lastDirection !== 0 && nextDirection !== swipe.lastDirection) {
+      swipe.turns += 1
+    }
+
+    swipe.lastDirection = nextDirection
+    swipe.lastX = event.clientX
+
+    const now = Date.now()
+
+    if (swipe.turns >= 4 && now - swipe.lastSpawnedAt > 420) {
+      swipe.turns = 0
+      swipe.lastSpawnedAt = now
+      spawnProfileHeart(event)
+    }
+  }
+
+  const resetProfileIconSwipe = () => {
+    profileSwipeRef.current.lastDirection = 0
+    profileSwipeRef.current.lastX = null
+    profileSwipeRef.current.turns = 0
+  }
+
   return (
     <section className="profile-page" aria-labelledby="profile-title">
       <div className="profile-hero">
-        <div className="profile-hero__image">
+        <div
+          className="profile-hero__image"
+          onPointerLeave={resetProfileIconSwipe}
+          onPointerMove={handleProfileIconPointerMove}
+        >
           <img src="/profile.webp" alt="るるたぁのアイコン" />
+          {profileHearts.map((heart) => (
+            <span
+              className="profile-heart"
+              key={heart.id}
+              style={{
+                '--heart-drift': `${heart.drift}px`,
+                '--heart-scale': heart.scale,
+                left: `${heart.x}px`,
+                top: `${heart.y}px`,
+              }}
+              aria-hidden="true"
+            >
+              ♥
+            </span>
+          ))}
         </div>
         <div className="profile-hero__content">
           <p>Profile</p>
