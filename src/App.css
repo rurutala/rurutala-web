@@ -289,24 +289,7 @@
   filter: saturate(1.08);
 }
 
-.hero__bubble span {
-  position: absolute;
-  inset: auto 12px 14px;
-  display: -webkit-box;
-  overflow: hidden;
-  opacity: 1;
-  color: #ffffff;
-  font-size: clamp(0.72rem, 1vw, 0.9rem);
-  font-weight: 900;
-  line-height: 1.15;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.44);
-  transition: opacity 0.24s ease;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-.hero__bubble.is-changing img,
-.hero__bubble.is-changing span {
+.hero__bubble.is-changing img {
   opacity: 0;
 }
 

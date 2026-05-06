@@ -114,7 +114,6 @@ export function HomePage({ navigate }) {
                   alt=""
                   style={{ objectPosition: bubble.work.coverImagePosition }}
                 />
-                <span>{bubble.work.title}</span>
               </AppLink>
             ))}
           </div>
