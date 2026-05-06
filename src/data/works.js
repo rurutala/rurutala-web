@@ -531,6 +531,7 @@ export const works = [
     dateLabel: '未定',
     sortDate: '2025-12-31',
     recommendedRank: 100,
+    coverImagePosition: 'center 10%',
     media: { images: [asset('ILLUST/ILLUST_EMA/raf.webp')] },
     sections: templates.illustration,
   }),
