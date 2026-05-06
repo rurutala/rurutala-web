@@ -838,8 +838,8 @@ function AudioWorkPlayer({ children }) {
         const height = Math.max(8, (strength * 0.74 + neighbor * 0.26) * window.innerHeight * 0.34)
         const x = column * gridSize
 
-        canvasContext.strokeStyle = `rgba(${themeRgb}, ${0.05 + strength * 0.34})`
-        canvasContext.lineWidth = 1 + strength * 3.2
+        canvasContext.strokeStyle = `rgba(${themeRgb}, ${0.018 + strength * 0.11})`
+        canvasContext.lineWidth = 1 + strength * 1.4
         canvasContext.beginPath()
         canvasContext.moveTo(x, centerY - height)
         canvasContext.lineTo(x, centerY + height)

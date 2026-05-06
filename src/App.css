@@ -750,7 +750,7 @@
 }
 
 .work-media__audio.is-playing .audio-spectrum-backdrop {
-  opacity: 0.72;
+  opacity: 0.38;
 }
 
 .work-media__slider {
