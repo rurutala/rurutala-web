@@ -1,4 +1,4 @@
-import heroImg from '../assets/hero.png'
+import heroImg from '../assets/hero.webp'
 
 const asset = (path) => `/assets/${path}`
 
@@ -143,17 +143,17 @@ export const works = [
     links: [{ label: '作品ページ(UnityRoom)', href: 'https://unityroom.com/games/colorconnect' }],
     media: {
       images: [
-        asset('PG/PG_COLORCONNECT/colorconnect1.png'),
-        asset('PG/PG_COLORCONNECT/colorconnect2.png'),
-        asset('PG/PG_COLORCONNECT/colorconnect3.png'),
-        asset('PG/PG_COLORCONNECT/colorconnect4.png'),
+        asset('PG/PG_COLORCONNECT/colorconnect1.webp'),
+        asset('PG/PG_COLORCONNECT/colorconnect2.webp'),
+        asset('PG/PG_COLORCONNECT/colorconnect3.webp'),
+        asset('PG/PG_COLORCONNECT/colorconnect4.webp'),
       ],
       videos: [
         {
           title: 'カラーコネクト',
           src: asset('PG/PG_COLORCONNECT/colorconnect_movie.mkv'),
           type: 'video/x-matroska',
-          poster: asset('PG/PG_COLORCONNECT/colorconnect1.png'),
+          poster: asset('PG/PG_COLORCONNECT/colorconnect1.webp'),
         },
       ],
     },
@@ -171,11 +171,11 @@ export const works = [
     recommendedRank: 98,
     media: {
       images: [
-        asset('LIVE2D/minamoruav2.png'),
-        asset('LIVE2D/minamov2-1.png'),
-        asset('LIVE2D/minamov2-2.png'),
-        asset('LIVE2D/minamov2-3.png'),
-        asset('LIVE2D/minamov2-4.png'),
+        asset('LIVE2D/minamoruav2.webp'),
+        asset('LIVE2D/minamov2-1.webp'),
+        asset('LIVE2D/minamov2-2.webp'),
+        asset('LIVE2D/minamov2-3.webp'),
+        asset('LIVE2D/minamov2-4.webp'),
       ],
     },
     sections: templates.live2d,
@@ -192,10 +192,10 @@ export const works = [
     recommendedRank: 96,
     media: {
       images: [
-        asset('3DCG/minamorua_3d1.png'),
-        asset('3DCG/minamorua_3d2.png'),
-        asset('3DCG/minamorua_3d3.png'),
-        asset('3DCG/minamorua_3d4.png'),
+        asset('3DCG/minamorua_3d1.webp'),
+        asset('3DCG/minamorua_3d2.webp'),
+        asset('3DCG/minamorua_3d3.webp'),
+        asset('3DCG/minamorua_3d4.webp'),
       ],
     },
     sections: templates.cg,
@@ -219,10 +219,10 @@ export const works = [
     ],
     media: {
       images: [
-        asset('PG/PG_ERUPTION/eruption.png'),
-        asset('PG/PG_ERUPTION/eruption1.png'),
-        asset('PG/PG_ERUPTION/eruption2.png'),
-        asset('PG/PG_ERUPTION/eruption3.png'),
+        asset('PG/PG_ERUPTION/eruption.webp'),
+        asset('PG/PG_ERUPTION/eruption1.webp'),
+        asset('PG/PG_ERUPTION/eruption2.webp'),
+        asset('PG/PG_ERUPTION/eruption3.webp'),
         asset('PG/PG_ERUPTION/eruption4.gif'),
         asset('PG/PG_ERUPTION/eruption5.gif'),
         asset('PG/PG_ERUPTION/eruption6.gif'),
@@ -243,12 +243,12 @@ export const works = [
     links: [{ label: '作品ページ(UnityRoom)', href: 'https://unityroom.com/games/notesknights' }],
     media: {
       images: [
-        asset('PG/PG_NOTESKNIGHTS/notesknights1.png'),
-        asset('PG/PG_NOTESKNIGHTS/notesknights2.png'),
-        asset('PG/PG_NOTESKNIGHTS/notesknights3.png'),
-        asset('PG/PG_NOTESKNIGHTS/notesknights4.png'),
-        asset('PG/PG_NOTESKNIGHTS/notesknights5.png'),
-        asset('PG/PG_NOTESKNIGHTS/notesknights6.png'),
+        asset('PG/PG_NOTESKNIGHTS/notesknights1.webp'),
+        asset('PG/PG_NOTESKNIGHTS/notesknights2.webp'),
+        asset('PG/PG_NOTESKNIGHTS/notesknights3.webp'),
+        asset('PG/PG_NOTESKNIGHTS/notesknights4.webp'),
+        asset('PG/PG_NOTESKNIGHTS/notesknights5.webp'),
+        asset('PG/PG_NOTESKNIGHTS/notesknights6.webp'),
       ],
     },
     sections: templates.pg,
@@ -266,9 +266,9 @@ export const works = [
     links: [{ label: '作品ページ(UnityRoom)', href: 'https://unityroom.com/games/deainder' }],
     media: {
       images: [
-        asset('PG/PG_DEAIINDER/deainder1.png'),
-        asset('PG/PG_DEAIINDER/deainder2.png'),
-        asset('PG/PG_DEAIINDER/deainder3.png'),
+        asset('PG/PG_DEAIINDER/deainder1.webp'),
+        asset('PG/PG_DEAIINDER/deainder2.webp'),
+        asset('PG/PG_DEAIINDER/deainder3.webp'),
       ],
     },
     sections: templates.pg,
@@ -286,9 +286,9 @@ export const works = [
     links: [{ label: '作品ページ(UnityRoom)', href: 'https://unityroom.com/games/dango' }],
     media: {
       images: [
-        asset('PG/PG_DANGO/dango-0.png'),
-        asset('PG/PG_DANGO/dango-1.png'),
-        asset('PG/PG_DANGO/dango-2.png'),
+        asset('PG/PG_DANGO/dango-0.webp'),
+        asset('PG/PG_DANGO/dango-1.webp'),
+        asset('PG/PG_DANGO/dango-2.webp'),
       ],
     },
     sections: templates.pg,
@@ -306,12 +306,12 @@ export const works = [
     links: [{ label: '作品ページ(UnityRoom)', href: 'https://unityroom.com/games/fruitsamurai' }],
     media: {
       images: [
-        asset('PG/PG_SAMURAI/samurai0.png'),
-        asset('PG/PG_SAMURAI/samurai1.png'),
-        asset('PG/PG_SAMURAI/samurai2.png'),
-        asset('PG/PG_SAMURAI/samurai3.png'),
-        asset('PG/PG_SAMURAI/samurai4.png'),
-        asset('PG/PG_SAMURAI/samurai5.png'),
+        asset('PG/PG_SAMURAI/samurai0.webp'),
+        asset('PG/PG_SAMURAI/samurai1.webp'),
+        asset('PG/PG_SAMURAI/samurai2.webp'),
+        asset('PG/PG_SAMURAI/samurai3.webp'),
+        asset('PG/PG_SAMURAI/samurai4.webp'),
+        asset('PG/PG_SAMURAI/samurai5.webp'),
       ],
     },
     sections: templates.pg,
@@ -329,10 +329,10 @@ export const works = [
     links: [{ label: '作品ページ(UnityRoom)', href: 'https://unityroom.com/games/sweetsbang' }],
     media: {
       images: [
-        asset('PG/PG_SWEETSBANG/sweetsbang0.png'),
-        asset('PG/PG_SWEETSBANG/sweetsbang1.png'),
-        asset('PG/PG_SWEETSBANG/sweetsbang2.png'),
-        asset('PG/PG_SWEETSBANG/sweetsbang3.png'),
+        asset('PG/PG_SWEETSBANG/sweetsbang0.webp'),
+        asset('PG/PG_SWEETSBANG/sweetsbang1.webp'),
+        asset('PG/PG_SWEETSBANG/sweetsbang2.webp'),
+        asset('PG/PG_SWEETSBANG/sweetsbang3.webp'),
       ],
     },
     sections: templates.pg,
@@ -350,9 +350,9 @@ export const works = [
     links: [{ label: '作品ページ(UnityRoom)', href: 'https://unityroom.com/games/magicmagic' }],
     media: {
       images: [
-        asset('PG/PG_MAGICMAGIC/magicmagic1.png'),
-        asset('PG/PG_MAGICMAGIC/magicmagic2.png'),
-        asset('PG/PG_MAGICMAGIC/magicmagic3.png'),
+        asset('PG/PG_MAGICMAGIC/magicmagic1.webp'),
+        asset('PG/PG_MAGICMAGIC/magicmagic2.webp'),
+        asset('PG/PG_MAGICMAGIC/magicmagic3.webp'),
       ],
     },
     sections: templates.pg,
@@ -369,12 +369,12 @@ export const works = [
     recommendedRank: 80,
     media: {
       images: [
-        asset('PG/PG_DOA/deadoralive1.png'),
-        asset('PG/PG_DOA/deadoralive2.png'),
-        asset('PG/PG_DOA/deadoralive3.png'),
-        asset('PG/PG_DOA/deadoralive4.png'),
-        asset('PG/PG_DOA/deadoralive5.png'),
-        asset('PG/PG_DOA/deadoralive6.png'),
+        asset('PG/PG_DOA/deadoralive1.webp'),
+        asset('PG/PG_DOA/deadoralive2.webp'),
+        asset('PG/PG_DOA/deadoralive3.webp'),
+        asset('PG/PG_DOA/deadoralive4.webp'),
+        asset('PG/PG_DOA/deadoralive5.webp'),
+        asset('PG/PG_DOA/deadoralive6.webp'),
       ],
     },
     sections: templates.pg,
@@ -391,8 +391,8 @@ export const works = [
     recommendedRank: 78,
     media: {
       images: [
-        asset('PG/PG_SAITYOU/saityou0.png'),
-        asset('PG/PG_SAITYOU/saityou1.png'),
+        asset('PG/PG_SAITYOU/saityou0.webp'),
+        asset('PG/PG_SAITYOU/saityou1.webp'),
       ],
     },
     sections: templates.pg,
@@ -496,7 +496,7 @@ export const works = [
     dateLabel: '2024(後期) - 2025(後期)',
     sortDate: '2025-12-31',
     recommendedRank: 70,
-    media: { images: [asset('ILLUST/ILLUST_EMA/raf.png')] },
+    media: { images: [asset('ILLUST/ILLUST_EMA/raf.webp')] },
     sections: templates.illustration,
   }),
   createWork({
@@ -509,7 +509,7 @@ export const works = [
     dateLabel: '2024(後期) - 2025(後期)',
     sortDate: '2025-12-31',
     recommendedRank: 68,
-    media: { images: [asset('ILLUST/ILLUST_LEUR/leur.png')] },
+    media: { images: [asset('ILLUST/ILLUST_LEUR/leur.webp')] },
     sections: templates.illustration,
   }),
   createWork({
@@ -522,7 +522,7 @@ export const works = [
     dateLabel: '2024(後期) - 2025(後期)',
     sortDate: '2025-12-31',
     recommendedRank: 66,
-    media: { images: [asset('ILLUST/ILLUST_RUA_1/rua.png')] },
+    media: { images: [asset('ILLUST/ILLUST_RUA_1/rua.webp')] },
     sections: templates.illustration,
   }),
   createWork({
@@ -535,7 +535,7 @@ export const works = [
     dateLabel: '2024(後期) - 2025(後期)',
     sortDate: '2025-12-31',
     recommendedRank: 64,
-    media: { images: [asset('ILLUST/ILLUST_RUA_2/rua.png')] },
+    media: { images: [asset('ILLUST/ILLUST_RUA_2/rua.webp')] },
     sections: templates.illustration,
   }),
   createWork({
@@ -548,7 +548,7 @@ export const works = [
     dateLabel: '2024(後期) - 2025(後期)',
     sortDate: '2025-12-31',
     recommendedRank: 62,
-    media: { images: [asset('ILLUST/ILLUST_RURUNE/rurune.png')] },
+    media: { images: [asset('ILLUST/ILLUST_RURUNE/rurune.webp')] },
     sections: templates.illustration,
   }),
   createWork({
@@ -561,7 +561,7 @@ export const works = [
     dateLabel: '2024(後期) - 2025(後期)',
     sortDate: '2025-12-31',
     recommendedRank: 60,
-    media: { images: [asset('ILLUST/ILLUST_THEHOLE/thehole.png')] },
+    media: { images: [asset('ILLUST/ILLUST_THEHOLE/thehole.webp')] },
     sections: templates.illustration,
   }),
 ]

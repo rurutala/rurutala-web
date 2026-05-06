@@ -3,6 +3,13 @@ import { articleTags, articles, featuredArticles } from './data/articles'
 import { featuredWorks, works, workTags } from './data/works'
 import './App.css'
 
+const socialLinks = [
+  { label: 'Twitter', href: 'https://x.com/rurutala_ch', icon: '/twitter.svg' },
+  { label: 'YouTube', href: 'https://www.youtube.com/@rurutala_ch', icon: '/youtube.svg' },
+  { label: 'GitHub', href: 'https://github.com/rurutala', icon: '/github.svg' },
+  { label: 'Pixiv', href: 'https://www.pixiv.net/users/96051201', icon: '/pixiv.svg' },
+]
+
 const sortOptions = [
   { value: 'recommended', label: '作者のおすすめ' },
   { value: 'newest', label: '投稿日時が新しい順' },
@@ -218,13 +225,6 @@ function SiteHeader({ currentRoute, isMenuOpen, setIsMenuOpen, navigate }) {
 }
 
 function SiteFooter() {
-  const socialLinks = [
-    { label: 'X', href: 'https://x.com/' },
-    { label: 'YouTube', href: 'https://www.youtube.com/' },
-    { label: 'GitHub', href: 'https://github.com/' },
-    { label: 'Mail', href: 'mailto:hello@rurutala.net' },
-  ]
-
   return (
     <footer className="site-footer">
       <div className="site-footer__inner">
@@ -236,8 +236,8 @@ function SiteFooter() {
         <div className="site-footer__social">
           <nav className="social-links" aria-label="SNSリンク">
             {socialLinks.map((link) => (
-              <a href={link.href} key={link.label} aria-label={link.label}>
-                {link.label.slice(0, 2)}
+              <a href={link.href} key={link.label} aria-label={link.label} target="_blank" rel="noreferrer">
+                <img src={link.icon} alt="" aria-hidden="true" />
               </a>
             ))}
           </nav>
@@ -249,13 +249,25 @@ function SiteFooter() {
 }
 
 function HomePage({ navigate }) {
-  const heroBubbles = works.slice(0, 8).map((work, index) => ({
+  const openingWorks = useMemo(() => {
+    const shuffledWorks = [...works]
+
+    for (let index = shuffledWorks.length - 1; index > 0; index -= 1) {
+      const randomIndex = Math.floor(Math.random() * (index + 1))
+      ;[shuffledWorks[index], shuffledWorks[randomIndex]] = [shuffledWorks[randomIndex], shuffledWorks[index]]
+    }
+
+    return shuffledWorks.slice(0, 8)
+  }, [])
+
+  const heroBubbles = openingWorks.map((work, index) => ({
     work,
     size: [420, 260, 560, 320, 210, 500, 280, 720][index],
     top: [-15, 75, -5, 85, -10, 60, 95, -20][index],
     left: [108, 126, 146, 166, 184, 202, 224, 246][index],
     duration: [26, 32, 30, 36, 24, 34, 28, 38][index],
     delay: [-2, -10, -5, -16, -8, -20, -13, -24][index],
+    tilt: [-5, 4, -3, 5, -4, 3, -5, 4][index],
   }))
 
   return (
@@ -275,6 +287,7 @@ function HomePage({ navigate }) {
                   '--bubble-left': `${bubble.left}%`,
                   '--bubble-duration': `${bubble.duration}s`,
                   '--bubble-delay': `${bubble.delay}s`,
+                  '--bubble-tilt': `${bubble.tilt}deg`,
                 }}
               >
                 <img src={bubble.work.coverImage} alt="" />
@@ -421,16 +434,53 @@ function WorkGrid({ works: gridWorks, navigate }) {
   )
 }
 
-function WorkMediaSlider({ items, title }) {
+function WorkMediaSlider({ enableImageModal = false, items, title }) {
   const [activeIndex, setActiveIndex] = useState(0)
+  const [modalImage, setModalImage] = useState(null)
   const dragStartX = useRef(0)
   const dragStartY = useRef(0)
   const dragDeltaX = useRef(0)
   const isDragging = useRef(false)
+  const didDrag = useRef(false)
 
   useEffect(() => {
     setActiveIndex(0)
   }, [items])
+
+  useEffect(() => {
+    if (!modalImage) {
+      return undefined
+    }
+
+    const scrollY = window.scrollY
+    const originalHtmlOverflow = document.documentElement.style.overflow
+    const originalOverflow = document.body.style.overflow
+    const originalPosition = document.body.style.position
+    const originalTop = document.body.style.top
+    const originalWidth = document.body.style.width
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setModalImage(null)
+      }
+    }
+
+    document.documentElement.style.overflow = 'hidden'
+    document.body.style.overflow = 'hidden'
+    document.body.style.position = 'fixed'
+    document.body.style.top = `-${scrollY}px`
+    document.body.style.width = '100%'
+    document.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.documentElement.style.overflow = originalHtmlOverflow
+      document.body.style.overflow = originalOverflow
+      document.body.style.position = originalPosition
+      document.body.style.top = originalTop
+      document.body.style.width = originalWidth
+      document.removeEventListener('keydown', handleKeyDown)
+      window.scrollTo(0, scrollY)
+    }
+  }, [modalImage])
 
   const activeItem = items[activeIndex]
   const hasMultipleItems = items.length > 1
@@ -450,6 +500,7 @@ function WorkMediaSlider({ items, title }) {
     dragStartX.current = event.clientX
     dragStartY.current = event.clientY
     dragDeltaX.current = 0
+    didDrag.current = false
     event.currentTarget.setPointerCapture?.(event.pointerId)
   }
 
@@ -459,6 +510,7 @@ function WorkMediaSlider({ items, title }) {
     }
 
     dragDeltaX.current = event.clientX - dragStartX.current
+    didDrag.current = Math.abs(dragDeltaX.current) > 8
   }
 
   const handlePointerUp = (event) => {
@@ -496,7 +548,25 @@ function WorkMediaSlider({ items, title }) {
         }}
       >
         {activeItem.type === 'image' && (
-          <a href={activeItem.src} target="_blank" rel="noreferrer" draggable="false">
+          <a
+            href={activeItem.src}
+            target="_blank"
+            rel="noreferrer"
+            draggable="false"
+            onClick={(event) => {
+              if (didDrag.current) {
+                event.preventDefault()
+                return
+              }
+
+              if (!enableImageModal) {
+                return
+              }
+
+              event.preventDefault()
+              setModalImage(activeItem)
+            }}
+          >
             <img src={activeItem.src} alt={activeItem.title || `${title} ${activeIndex + 1}`} />
           </a>
         )}
@@ -556,11 +626,30 @@ function WorkMediaSlider({ items, title }) {
           ))}
         </div>
       )}
+      {modalImage && (
+        <div
+          className="image-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${title} の拡大画像`}
+          onClick={() => setModalImage(null)}
+        >
+          <button
+            className="image-modal__close"
+            type="button"
+            aria-label="画像を閉じる"
+            onClick={() => setModalImage(null)}
+          >
+            ×
+          </button>
+          <img src={modalImage.src} alt={modalImage.title || title} onClick={(event) => event.stopPropagation()} />
+        </div>
+      )}
     </div>
   )
 }
 
-function WorkMedia({ media, title }) {
+function WorkMedia({ enableImageModal = false, media, title }) {
   const images = media?.images ?? []
   const embeds = media?.embeds ?? []
   const audio = media?.audio ?? []
@@ -593,7 +682,9 @@ function WorkMedia({ media, title }) {
 
   return (
     <div className="work-media" aria-label={`${title} のメディア`}>
-      {sliderItems.length > 0 && <WorkMediaSlider items={sliderItems} title={title} />}
+      {sliderItems.length > 0 && (
+        <WorkMediaSlider enableImageModal={enableImageModal} items={sliderItems} title={title} />
+      )}
 
       {audio.map((track) => (
         <figure className="work-media__audio" key={track.src}>
@@ -630,18 +721,12 @@ function WorkDetailPage({ work, navigate }) {
         <div>
           <p className="work-detail__eyebrow">{work.tags.join(' / ')}</p>
           <h1>{work.title}</h1>
+          <p className="work-detail__meta-line">
+            <span>Published {formatWorkDate(work)}</span>
+            <span>Author {work.author}</span>
+          </p>
           <p>{work.subtitle}</p>
         </div>
-        <dl className="work-detail__info">
-          <div>
-            <dt>Published</dt>
-            <dd>{formatWorkDate(work)}</dd>
-          </div>
-          <div>
-            <dt>Author</dt>
-            <dd>{work.author}</dd>
-          </div>
-        </dl>
       </header>
 
       {(work.media?.images?.length ?? 0) === 0 && (
@@ -650,7 +735,7 @@ function WorkDetailPage({ work, navigate }) {
         </div>
       )}
 
-      <WorkMedia media={work.media} title={work.title} />
+      <WorkMedia enableImageModal={work.tags.includes('イラスト')} media={work.media} title={work.title} />
 
       <div className="work-detail__content">
         <aside className="work-detail__side">
@@ -754,7 +839,7 @@ function ArticlesPage({ navigate }) {
 
 function ArticleGrid({ articles: gridArticles, navigate }) {
   return (
-    <div className="work-grid">
+    <div className={`work-grid article-grid ${gridArticles.length === 1 ? 'article-grid--single' : ''}`}>
       {gridArticles.map((article) => (
         <article className="work-card article-card" key={article.id}>
           <AppLink
@@ -810,18 +895,12 @@ function ArticleDetailPage({ article, navigate }) {
         <div>
           <p className="work-detail__eyebrow">{article.tags.join(' / ')}</p>
           <h1>{article.title}</h1>
+          <p className="work-detail__meta-line">
+            <span>Published {formatDate(article.publishedAt)}</span>
+            <span>Author {article.author}</span>
+          </p>
           <p>{article.excerpt}</p>
         </div>
-        <dl className="work-detail__info">
-          <div>
-            <dt>Published</dt>
-            <dd>{formatDate(article.publishedAt)}</dd>
-          </div>
-          <div>
-            <dt>Author</dt>
-            <dd>{article.author}</dd>
-          </div>
-        </dl>
       </header>
 
       <div className="work-detail__visual">
@@ -851,12 +930,6 @@ function ArticleDetailPage({ article, navigate }) {
 }
 
 function ProfilePage() {
-  const socialLinks = [
-    { label: 'X', href: 'https://x.com/' },
-    { label: 'YouTube', href: 'https://www.youtube.com/' },
-    { label: 'GitHub', href: 'https://github.com/' },
-    { label: 'Mail', href: 'mailto:hello@rurutala.net' },
-  ]
   const toolGroups = [
     {
       title: 'Programming',
@@ -897,7 +970,7 @@ function ProfilePage() {
     <section className="profile-page" aria-labelledby="profile-title">
       <div className="profile-hero">
         <div className="profile-hero__image">
-          <img src={works[0].coverImage} alt="るるたぁのアイコン" />
+          <img src="/profile.webp" alt="るるたぁのアイコン" />
         </div>
         <div className="profile-hero__content">
           <p>Profile</p>
@@ -910,6 +983,7 @@ function ProfilePage() {
           <nav className="profile-social" aria-label="SNSリンク">
             {socialLinks.map((link) => (
               <a href={link.href} key={link.label} target="_blank" rel="noreferrer">
+                <img src={link.icon} alt="" aria-hidden="true" />
                 {link.label}
               </a>
             ))}
