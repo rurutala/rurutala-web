@@ -427,12 +427,10 @@ export const works = [
     coverImage: asset('PG/PG_DOUBLECROSS/doublecross2.png'),
     media: {
       images: [asset('PG/PG_DOUBLECROSS/doublecross2.png')],
-      videos: [
+      embeds: [
         {
           title: 'ダブルクロス',
-          src: asset('PG/PG_DOUBLECROSS/doublecross.mp4'),
-          type: 'video/mp4',
-          poster: asset('PG/PG_DOUBLECROSS/doublecross2.png'),
+          src: 'https://www.youtube.com/embed/tIN7Xy1FSa8?si=IYREp1nls7CpYE-B',
         },
       ],
     },
