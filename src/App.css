@@ -535,7 +535,7 @@
   }
 
   to {
-    transform: translateX(calc(-220vw - var(--bubble-size) * 1.4)) translateY(12px) rotate(calc(var(--bubble-tilt) * 1.15));
+    transform: translateX(calc(var(--bubble-exit, -220vw) - var(--bubble-size) * 1.4)) translateY(12px) rotate(calc(var(--bubble-tilt) * 1.15));
   }
 }
 

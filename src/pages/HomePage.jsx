@@ -6,13 +6,36 @@ import { featuredArticles } from '../data/articles'
 import { featuredWorks, works } from '../data/works'
 
 const recommendedWorks = [...works].sort((workA, workB) => workB.recommendedRank - workA.recommendedRank)
+const pinnedOpeningWorkIds = ['illust-rurune', 'illust-the-hole', 'color-connect']
+const pinnedOpeningSlots = [7, 2, 5]
+const dynamicOpeningWorks = recommendedWorks.filter((work) => !pinnedOpeningWorkIds.includes(work.id))
+
+function createOpeningWorks() {
+  const openingWorks = []
+  let dynamicIndex = 0
+
+  pinnedOpeningSlots.forEach((slotIndex, pinnedIndex) => {
+    openingWorks[slotIndex] = works.find((work) => work.id === pinnedOpeningWorkIds[pinnedIndex])
+  })
+
+  for (let slotIndex = 0; slotIndex < 8; slotIndex += 1) {
+    if (openingWorks[slotIndex]) {
+      continue
+    }
+
+    openingWorks[slotIndex] = dynamicOpeningWorks[dynamicIndex % dynamicOpeningWorks.length]
+    dynamicIndex += 1
+  }
+
+  return openingWorks
+}
 
 export function HomePage({ navigate }) {
-  const [openingWorks, setOpeningWorks] = useState(() => recommendedWorks.slice(0, 8))
+  const [openingWorks, setOpeningWorks] = useState(() => createOpeningWorks())
   const [changingSlotIds, setChangingSlotIds] = useState([])
   const changingSlots = useRef(new Set())
   const transitionTimers = useRef([])
-  const nextOpeningWorkIndex = useRef(8)
+  const nextOpeningWorkIndex = useRef(8 - pinnedOpeningSlots.length)
 
   useEffect(() => {
     const timers = transitionTimers.current
@@ -23,7 +46,7 @@ export function HomePage({ navigate }) {
   }, [])
 
   const replaceOpeningWork = (slotIndex) => {
-    if (changingSlots.current.has(slotIndex)) {
+    if (pinnedOpeningSlots.includes(slotIndex) || changingSlots.current.has(slotIndex)) {
       return
     }
 
@@ -37,7 +60,7 @@ export function HomePage({ navigate }) {
             return work
           }
 
-          const nextWork = recommendedWorks[nextOpeningWorkIndex.current % recommendedWorks.length]
+          const nextWork = dynamicOpeningWorks[nextOpeningWorkIndex.current % dynamicOpeningWorks.length]
           nextOpeningWorkIndex.current += 1
 
           return nextWork || work
@@ -57,9 +80,10 @@ export function HomePage({ navigate }) {
     work,
     size: [420, 260, 560, 320, 210, 500, 280, 720][index],
     top: [-15, 75, -5, 85, -10, 60, 95, -20][index],
-    left: [108, 126, 146, 166, 184, 202, 224, 246][index],
-    duration: [26, 32, 30, 36, 24, 34, 28, 38][index],
-    delay: [-2, -10, -5, -16, -8, -20, -13, -24][index],
+    left: [104, 126, 150, 176, 204, 234, 266, 330][index],
+    duration: [30, 38, 36, 42, 28, 40, 34, 52][index],
+    delay: [-2, -9, -16, -23, -5, -30, -12, -32.5][index],
+    exit: ['-220vw', '-220vw', '-220vw', '-220vw', '-220vw', '-220vw', '-220vw', '-430vw'][index],
     tilt: [-16, 14, -12, 18, -14, 12, -18, 16][index],
   }))
 
@@ -81,6 +105,7 @@ export function HomePage({ navigate }) {
                   '--bubble-left': `${bubble.left}%`,
                   '--bubble-duration': `${bubble.duration}s`,
                   '--bubble-delay': `${bubble.delay}s`,
+                  '--bubble-exit': bubble.exit,
                   '--bubble-tilt': `${bubble.tilt}deg`,
                 }}
               >
