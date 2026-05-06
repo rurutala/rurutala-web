@@ -249,7 +249,7 @@ function SiteFooter() {
 }
 
 function HomePage({ navigate }) {
-  const openingWorks = useMemo(() => {
+  const [openingWorks, setOpeningWorks] = useState(() => {
     const shuffledWorks = [...works]
 
     for (let index = shuffledWorks.length - 1; index > 0; index -= 1) {
@@ -258,7 +258,45 @@ function HomePage({ navigate }) {
     }
 
     return shuffledWorks.slice(0, 8)
+  })
+  const [changingSlotIds, setChangingSlotIds] = useState([])
+  const changingSlots = useRef(new Set())
+  const transitionTimers = useRef([])
+
+  useEffect(() => {
+    return () => {
+      transitionTimers.current.forEach((timerId) => window.clearTimeout(timerId))
+    }
   }, [])
+
+  const replaceOpeningWork = (slotIndex) => {
+    if (changingSlots.current.has(slotIndex)) {
+      return
+    }
+
+    changingSlots.current.add(slotIndex)
+    setChangingSlotIds((currentIds) => [...currentIds, slotIndex])
+
+    const swapTimer = window.setTimeout(() => {
+      setOpeningWorks((currentWorks) =>
+        currentWorks.map((work, index) => {
+          if (index !== slotIndex) {
+            return work
+          }
+
+          const candidates = works.filter((candidate) => candidate.id !== work.id)
+          return candidates[Math.floor(Math.random() * candidates.length)] || work
+        }),
+      )
+    }, 220)
+
+    const revealTimer = window.setTimeout(() => {
+      changingSlots.current.delete(slotIndex)
+      setChangingSlotIds((currentIds) => currentIds.filter((id) => id !== slotIndex))
+    }, 460)
+
+    transitionTimers.current.push(swapTimer, revealTimer)
+  }
 
   const heroBubbles = openingWorks.map((work, index) => ({
     work,
@@ -267,7 +305,7 @@ function HomePage({ navigate }) {
     left: [108, 126, 146, 166, 184, 202, 224, 246][index],
     duration: [26, 32, 30, 36, 24, 34, 28, 38][index],
     delay: [-2, -10, -5, -16, -8, -20, -13, -24][index],
-    tilt: [-5, 4, -3, 5, -4, 3, -5, 4][index],
+    tilt: [-16, 14, -12, 18, -14, 12, -18, 16][index],
   }))
 
   return (
@@ -275,12 +313,13 @@ function HomePage({ navigate }) {
       <section className="hero" aria-labelledby="hero-title">
         <div className="hero__stage">
           <div className="hero__bubbles" aria-label="注目作品">
-            {heroBubbles.map((bubble) => (
+            {heroBubbles.map((bubble, index) => (
               <AppLink
-                className="hero__bubble"
+                className={`hero__bubble ${changingSlotIds.includes(index) ? 'is-changing' : ''}`}
                 href={`/works/${bubble.work.id}`}
-                key={bubble.work.id}
+                key={`opening-${index}`}
                 navigate={navigate}
+                onAnimationIteration={() => replaceOpeningWork(index)}
                 style={{
                   '--bubble-size': `${bubble.size}px`,
                   '--bubble-top': `${bubble.top}%`,
