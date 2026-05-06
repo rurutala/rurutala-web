@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 export function DynamicFavicon() {
   useEffect(() => {
     const favicon = document.querySelector("link[rel='icon']")
-    const defaultHref = favicon?.getAttribute('href') || '/favicon.svg'
+    const defaultHref = favicon?.getAttribute('href') || '/profile.webp'
     const defaultTitle = 'るるたぁ official site'
     let titleResetTimer = null
     const sleepyIcon = `data:image/svg+xml,${encodeURIComponent(
