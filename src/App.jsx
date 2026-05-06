@@ -64,6 +64,10 @@ function getRoute(pathname) {
     return { name: 'articleDetail', id: decodeURIComponent(pathname.replace('/articles/', '')) }
   }
 
+  if (pathname === '/profile') {
+    return { name: 'profile' }
+  }
+
   return { name: 'home' }
 }
 
@@ -73,6 +77,14 @@ function formatDate(dateString) {
     month: 'long',
     day: 'numeric',
   }).format(new Date(dateString))
+}
+
+function formatWorkDate(work) {
+  return work.dateLabel || formatDate(work.publishedAt)
+}
+
+function getWorkSortDate(work) {
+  return new Date(work.sortDate || work.publishedAt)
 }
 
 function useRoute() {
@@ -192,9 +204,14 @@ function SiteHeader({ currentRoute, isMenuOpen, setIsMenuOpen, navigate }) {
         >
           Articles
         </AppLink>
-        <a href="/#profile" onClick={closeMenu}>
+        <AppLink
+          href="/profile"
+          className={currentRoute.name === 'profile' ? 'is-active' : ''}
+          navigate={navigate}
+          onClick={closeMenu}
+        >
           Profile
-        </a>
+        </AppLink>
       </nav>
     </header>
   )
@@ -316,11 +333,11 @@ function WorksPage({ navigate }) {
 
     return [...filteredWorks].sort((workA, workB) => {
       if (sortBy === 'newest') {
-        return new Date(workB.publishedAt) - new Date(workA.publishedAt)
+        return getWorkSortDate(workB) - getWorkSortDate(workA)
       }
 
       if (sortBy === 'oldest') {
-        return new Date(workA.publishedAt) - new Date(workB.publishedAt)
+        return getWorkSortDate(workA) - getWorkSortDate(workB)
       }
 
       return workB.recommendedRank - workA.recommendedRank
@@ -383,7 +400,7 @@ function WorkGrid({ works: gridWorks, navigate }) {
           </AppLink>
           <div className="work-card__body">
             <div className="work-card__meta">
-              <span>{formatDate(work.publishedAt)}</span>
+              <span>{formatWorkDate(work)}</span>
               <span>{work.author}</span>
             </div>
             <h3>
@@ -399,6 +416,192 @@ function WorkGrid({ works: gridWorks, navigate }) {
             </div>
           </div>
         </article>
+      ))}
+    </div>
+  )
+}
+
+function WorkMediaSlider({ items, title }) {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const dragStartX = useRef(0)
+  const dragStartY = useRef(0)
+  const dragDeltaX = useRef(0)
+  const isDragging = useRef(false)
+
+  useEffect(() => {
+    setActiveIndex(0)
+  }, [items])
+
+  const activeItem = items[activeIndex]
+  const hasMultipleItems = items.length > 1
+  const showPreviousItem = () => {
+    setActiveIndex((current) => (current === 0 ? items.length - 1 : current - 1))
+  }
+  const showNextItem = () => {
+    setActiveIndex((current) => (current === items.length - 1 ? 0 : current + 1))
+  }
+
+  const handlePointerDown = (event) => {
+    if (!hasMultipleItems || event.target.closest('video, iframe, button')) {
+      return
+    }
+
+    isDragging.current = true
+    dragStartX.current = event.clientX
+    dragStartY.current = event.clientY
+    dragDeltaX.current = 0
+    event.currentTarget.setPointerCapture?.(event.pointerId)
+  }
+
+  const handlePointerMove = (event) => {
+    if (!isDragging.current) {
+      return
+    }
+
+    dragDeltaX.current = event.clientX - dragStartX.current
+  }
+
+  const handlePointerUp = (event) => {
+    if (!isDragging.current) {
+      return
+    }
+
+    const dragDeltaY = event.clientY - dragStartY.current
+    const dragDistance = Math.abs(dragDeltaX.current)
+    const isHorizontalDrag = dragDistance > Math.abs(dragDeltaY)
+
+    isDragging.current = false
+
+    if (dragDistance < 56 || !isHorizontalDrag) {
+      return
+    }
+
+    if (dragDeltaX.current > 0) {
+      showPreviousItem()
+      return
+    }
+
+    showNextItem()
+  }
+
+  return (
+    <div className="work-media__slider">
+      <div
+        className="work-media__slide"
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={() => {
+          isDragging.current = false
+        }}
+      >
+        {activeItem.type === 'image' && (
+          <a href={activeItem.src} target="_blank" rel="noreferrer" draggable="false">
+            <img src={activeItem.src} alt={activeItem.title || `${title} ${activeIndex + 1}`} />
+          </a>
+        )}
+        {activeItem.type === 'video' && (
+          <video controls poster={activeItem.poster}>
+            <source src={activeItem.src} type={activeItem.mimeType || 'video/mp4'} />
+            お使いのブラウザは動画再生に対応していません。
+          </video>
+        )}
+        {activeItem.type === 'embed' && (
+          <iframe
+            src={activeItem.src}
+            title={activeItem.title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
+        )}
+        {activeItem.caption && <p className="work-media__caption">{activeItem.caption}</p>}
+        {hasMultipleItems && (
+          <>
+            <button
+              className="work-media__nav work-media__nav--previous"
+              type="button"
+              aria-label="前のメディア"
+              onClick={showPreviousItem}
+            >
+              ‹
+            </button>
+            <button
+              className="work-media__nav work-media__nav--next"
+              type="button"
+              aria-label="次のメディア"
+              onClick={showNextItem}
+            >
+              ›
+            </button>
+          </>
+        )}
+      </div>
+      {hasMultipleItems && (
+        <div className="work-media__thumbs" aria-label={`${title} のメディア選択`}>
+          {items.map((item, index) => (
+            <button
+              className={index === activeIndex ? 'is-active' : ''}
+              key={`${item.type}-${item.src}`}
+              type="button"
+              aria-label={`${index + 1}番目を表示`}
+              onClick={() => setActiveIndex(index)}
+            >
+              {item.type === 'image' && <img src={item.src} alt="" />}
+              {item.type !== 'image' && item.poster && <img src={item.poster} alt="" />}
+              {item.type !== 'image' && !item.poster && (
+                <span>{item.type === 'video' ? 'Video' : 'YouTube'}</span>
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function WorkMedia({ media, title }) {
+  const images = media?.images ?? []
+  const embeds = media?.embeds ?? []
+  const audio = media?.audio ?? []
+  const videos = media?.videos ?? []
+  const sliderItems = [
+    ...videos.map((video) => ({
+      type: 'video',
+      src: video.src,
+      title: video.title,
+      caption: video.title,
+      poster: video.poster,
+      mimeType: video.type,
+    })),
+    ...embeds.map((embed) => ({
+      type: 'embed',
+      src: embed.src,
+      title: embed.title,
+      caption: embed.title,
+    })),
+    ...images.map((image, index) => ({
+      type: 'image',
+      src: image,
+      title: `${title} ${index + 1}`,
+    })),
+  ]
+
+  if (images.length === 0 && embeds.length === 0 && audio.length === 0 && videos.length === 0) {
+    return null
+  }
+
+  return (
+    <div className="work-media" aria-label={`${title} のメディア`}>
+      {sliderItems.length > 0 && <WorkMediaSlider items={sliderItems} title={title} />}
+
+      {audio.map((track) => (
+        <figure className="work-media__audio" key={track.src}>
+          <figcaption>{track.title}</figcaption>
+          <audio controls src={track.src}>
+            お使いのブラウザは音声再生に対応していません。
+          </audio>
+        </figure>
       ))}
     </div>
   )
@@ -432,7 +635,7 @@ function WorkDetailPage({ work, navigate }) {
         <dl className="work-detail__info">
           <div>
             <dt>Published</dt>
-            <dd>{formatDate(work.publishedAt)}</dd>
+            <dd>{formatWorkDate(work)}</dd>
           </div>
           <div>
             <dt>Author</dt>
@@ -441,9 +644,13 @@ function WorkDetailPage({ work, navigate }) {
         </dl>
       </header>
 
-      <div className="work-detail__visual">
-        <img src={work.coverImage} alt="" />
-      </div>
+      {(work.media?.images?.length ?? 0) === 0 && (
+        <div className="work-detail__visual">
+          <img src={work.coverImage} alt="" />
+        </div>
+      )}
+
+      <WorkMedia media={work.media} title={work.title} />
 
       <div className="work-detail__content">
         <aside className="work-detail__side">
@@ -643,6 +850,128 @@ function ArticleDetailPage({ article, navigate }) {
   )
 }
 
+function ProfilePage() {
+  const socialLinks = [
+    { label: 'X', href: 'https://x.com/' },
+    { label: 'YouTube', href: 'https://www.youtube.com/' },
+    { label: 'GitHub', href: 'https://github.com/' },
+    { label: 'Mail', href: 'mailto:hello@rurutala.net' },
+  ]
+  const toolGroups = [
+    {
+      title: 'Programming',
+      tools: ['Unity', 'C#', 'C', 'HTML / CSS', 'React / JavaScript', 'Java', 'Python'],
+    },
+    {
+      title: 'Illustration',
+      tools: ['CLIP STUDIO PAINT'],
+    },
+    {
+      title: 'Music',
+      tools: ['Studio One 6 Artist', '初音ミク V4X'],
+    },
+    {
+      title: 'Other',
+      tools: ['GitHub', 'AfterEffect', 'Live2D', 'Blender'],
+    },
+  ]
+  const faqs = [
+    {
+      question: '制作依頼はできますか？',
+      answer:
+        '内容やスケジュールによって相談可能です。まずは問い合わせフォームから概要を送ってください。',
+    },
+    {
+      question: 'どんなジャンルの制作が多いですか？',
+      answer:
+        'プログラミングを主軸としてその他の制作も行っています。',
+    },
+    {
+      question: '返信にはどのくらいかかりますか？',
+      answer:
+        '内容を確認したうえで返信します。急ぎの場合は、希望納期や優先事項も一緒に書いてください。',
+    },
+  ]
+
+  return (
+    <section className="profile-page" aria-labelledby="profile-title">
+      <div className="profile-hero">
+        <div className="profile-hero__image">
+          <img src={works[0].coverImage} alt="るるたぁのアイコン" />
+        </div>
+        <div className="profile-hero__content">
+          <p>Profile</p>
+          <h1 id="profile-title">るるたぁ</h1>
+          <div className="profile-copy">
+            <p>ゲーム・イラスト・音楽など興味のある分野を横断して制作しています。</p>
+            <p>作品づくりの過程や試作の記録を、ポートフォリオと記事としてまとめています。</p>
+            <p>作品を見ていただける人を少しでも楽しませれたら嬉しいなと思います。</p>
+          </div>
+          <nav className="profile-social" aria-label="SNSリンク">
+            {socialLinks.map((link) => (
+              <a href={link.href} key={link.label} target="_blank" rel="noreferrer">
+                {link.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      </div>
+
+      <section className="profile-section" aria-labelledby="profile-tools-title">
+        <div className="section-heading">
+          <p>Tools</p>
+          <h2 id="profile-tools-title">制作ツールと経験</h2>
+        </div>
+        <div className="tool-grid">
+          {toolGroups.map((group) => (
+            <article className="tool-card" key={group.title}>
+              <h3>{group.title}</h3>
+              <div className="work-tags">
+                {group.tools.map((tool) => (
+                  <span key={tool}>{tool}</span>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="profile-section contact-section" aria-labelledby="contact-title">
+        <div>
+          <p className="profile-section__eyebrow">Contact</p>
+          <h2 id="contact-title">お問い合わせ</h2>
+          <p>
+            制作依頼、相談、連絡事項はこちらのフォームから送信してください。
+          </p>
+        </div>
+        <a
+          className="button button--primary"
+          href="https://docs.google.com/forms/d/e/1FAIpQLSfbFb3CNXMYajr4rsrIj3ylBlDKGgNCpPXFgIBqklhi_ko8Lw/viewform"
+          target="_blank"
+          rel="noreferrer"
+        >
+          問い合わせフォームを開く
+        </a>
+      </section>
+
+      <section className="profile-section" aria-labelledby="faq-title">
+        <div className="section-heading">
+          <p>FAQ</p>
+          <h2 id="faq-title">よくある質問</h2>
+        </div>
+        <div className="faq-list">
+          {faqs.map((faq) => (
+            <details key={faq.question}>
+              <summary>{faq.question}</summary>
+              <p>{faq.answer}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+    </section>
+  )
+}
+
 function ScrollTopButton() {
   const [isVisible, setIsVisible] = useState(false)
 
@@ -805,10 +1134,14 @@ function DynamicFavicon() {
 
     document.addEventListener('visibilitychange', handleVisibilityChange)
     window.addEventListener('pageshow', resetTabState)
+    window.addEventListener('pagehide', resetTabState)
+    window.addEventListener('beforeunload', resetTabState)
 
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange)
       window.removeEventListener('pageshow', resetTabState)
+      window.removeEventListener('pagehide', resetTabState)
+      window.removeEventListener('beforeunload', resetTabState)
       resetTabState()
     }
   }, [])
@@ -851,6 +1184,7 @@ function App() {
         {route.name === 'articleDetail' && (
           <ArticleDetailPage article={currentArticle} navigate={navigate} />
         )}
+        {route.name === 'profile' && <ProfilePage />}
 
         <SiteFooter />
       </main>
