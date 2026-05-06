@@ -114,6 +114,8 @@
 }
 
 .site-shell {
+  position: relative;
+  z-index: 1;
   width: min(1120px, calc(100% - var(--page-safe-left) - var(--page-safe-right)));
   margin-left: auto;
   margin-right: auto;
@@ -716,6 +718,7 @@
 }
 
 .work-media__audio {
+  position: relative;
   display: grid;
   gap: 12px;
   margin: 0;
@@ -723,12 +726,31 @@
 }
 
 .work-media__audio figcaption {
+  position: relative;
+  z-index: 1;
   color: var(--text-strong);
   font-weight: 900;
 }
 
 .work-media__audio audio {
+  position: relative;
+  z-index: 1;
   width: 100%;
+}
+
+.audio-spectrum-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+}
+
+.work-media__audio.is-playing .audio-spectrum-backdrop {
+  opacity: 0.72;
 }
 
 .work-media__slider {
