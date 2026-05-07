@@ -6,6 +6,7 @@ import { ScrollTopButton } from './components/layout/ScrollTopButton'
 import { SiteFooter } from './components/layout/SiteFooter'
 import { SiteHeader } from './components/layout/SiteHeader'
 import { ThemePullCord } from './components/layout/ThemePullCord'
+import { Seo } from './components/Seo'
 import { articles } from './data/articles'
 import { works } from './data/works'
 import { useRoute } from './hooks/useRoute'
@@ -31,6 +32,8 @@ function App() {
 
   return (
     <>
+      <Seo route={route} work={currentWork} article={currentArticle} />
+
       {isOpeningVisible && (
         <OpeningAnimation onFinish={() => setIsOpeningVisible(false)} />
       )}
