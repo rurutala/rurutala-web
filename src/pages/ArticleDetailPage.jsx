@@ -50,6 +50,7 @@ export function ArticleDetailPage({ article, navigate }) {
             <section key={section.heading}>
               <h2>{section.heading}</h2>
               <p>{section.body}</p>
+              {section.note && <p className="article-detail__note">{section.note}</p>}
             </section>
           ))}
         </div>

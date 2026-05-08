@@ -964,6 +964,14 @@
 .article-detail .work-detail__sections p {
   font-size: clamp(1rem, 1.4vw, 1.08rem);
   line-height: 1.8;
+  white-space: pre-line;
+}
+
+.article-detail .work-detail__sections .article-detail__note {
+  margin-top: 24px;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--text-faint);
 }
 
 .profile-page {
