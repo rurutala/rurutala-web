@@ -619,6 +619,20 @@ export const works = [
     media: { images: [asset('ILLUST/ILLUST_THEHOLE/thehole.webp')] },
     sections: templates.illustration,
   }),
+  createWork({
+    id: 'illust-tyoko',
+    title: 'Tyoko',
+    subtitle: 'Tyoko のイラスト作品',
+    description: 'Tyoko のイラスト作品です。',
+    tags: [workTags[1]],
+    publishedAt: '2026-05-12',
+    dateLabel: '2026/5/12',
+    sortDate: '2026-05-12',
+    recommendedRank: 55,
+    coverImagePosition: 'center 40%',
+    media: { images: [asset('ILLUST/ILLUST_TYOKO/tyoko.webp')] },
+    sections: templates.illustration,
+  }),
 ]
 
 export const featuredWorks = [...works]
