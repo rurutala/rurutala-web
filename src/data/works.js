@@ -621,9 +621,9 @@ export const works = [
   }),
   createWork({
     id: 'illust-tyoko',
-    title: 'Tyoko',
-    subtitle: 'Tyoko のイラスト作品',
-    description: 'Tyoko のイラスト作品です。',
+    title: 'ちょこ',
+    subtitle: 'ラストピリオド10周年記念の二次創作イラスト。',
+    description: 'ラストピリオド10周年記念の二次創作イラスト。',
     tags: [workTags[1]],
     publishedAt: '2026-05-12',
     dateLabel: '2026/5/12',
