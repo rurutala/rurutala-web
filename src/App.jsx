@@ -6,6 +6,7 @@ import { ScrollTopButton } from './components/layout/ScrollTopButton'
 import { SiteFooter } from './components/layout/SiteFooter'
 import { SiteHeader } from './components/layout/SiteHeader'
 import { ThemePullCord } from './components/layout/ThemePullCord'
+import { LikeMilestoneToast } from './components/LikeMilestoneToast'
 import { Seo } from './components/Seo'
 import { articles } from './data/articles'
 import { works } from './data/works'
@@ -61,6 +62,7 @@ function App() {
 
           <SiteFooter />
         </main>
+        <LikeMilestoneToast />
       </LikesProvider>
       <ThemePullCord />
       <DynamicFavicon />

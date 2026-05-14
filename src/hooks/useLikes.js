@@ -67,6 +67,10 @@ export function LikesProvider({ children }) {
   const isLiked = useCallback((itemKey) => likedItems.has(itemKey), [likedItems])
   const isPending = useCallback((itemKey) => pendingItems.has(itemKey), [pendingItems])
   const getLikeCount = useCallback((itemKey) => counts[itemKey] ?? 0, [counts])
+  const localWorkLikeTotal = useMemo(
+    () => [...likedItems].filter((itemKey) => itemKey.startsWith('work:')).length,
+    [likedItems],
+  )
 
   const toggleLike = useCallback(
     async (itemKey) => {
@@ -136,9 +140,10 @@ export function LikesProvider({ children }) {
       getLikeCount,
       isLiked,
       isPending,
+      localWorkLikeTotal,
       toggleLike,
     }),
-    [counts, getLikeCount, isLiked, isPending, toggleLike],
+    [counts, getLikeCount, isLiked, isPending, localWorkLikeTotal, toggleLike],
   )
 
   return createElement(LikesContext.Provider, { value }, children)
