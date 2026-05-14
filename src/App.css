@@ -476,6 +476,77 @@
   text-decoration: none;
 }
 
+.title-with-like {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+}
+
+.title-with-like > a,
+.title-with-like > span:first-child {
+  min-width: 0;
+}
+
+.title-with-like--detail {
+  gap: 10px 14px;
+}
+
+.like-button {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 50px;
+  min-height: 30px;
+  padding: 0 9px;
+  border: 1px solid rgba(242, 107, 154, 0.2);
+  border-radius: 999px;
+  color: #b98294;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 900;
+  line-height: 1;
+  background: rgba(242, 107, 154, 0.04);
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.like-button:hover {
+  border-color: rgba(242, 107, 154, 0.62);
+  color: #d83d76;
+  background: rgba(242, 107, 154, 0.14);
+  transform: translateY(-1px);
+}
+
+.like-button.is-liked {
+  border-color: #f25286;
+  color: #ffffff;
+  background: #f25286;
+  box-shadow: 0 8px 22px rgba(242, 82, 134, 0.22);
+}
+
+.like-button:disabled {
+  cursor: wait;
+  opacity: 0.72;
+  transform: none;
+}
+
+.like-button__heart {
+  font-size: 1rem;
+}
+
+.work-detail__header .like-button {
+  min-height: 36px;
+  padding: 0 12px;
+  font-size: 0.92rem;
+}
+
 .work-card p:not(.work-card__category) {
   margin: 0;
   color: var(--text-muted);
@@ -1478,6 +1549,25 @@
   border-color: rgba(125, 217, 236, 0.34);
   color: #b8f0fb;
   background: rgba(125, 217, 236, 0.12);
+}
+
+:root[data-theme='dark'] .like-button {
+  border-color: rgba(242, 107, 154, 0.26);
+  color: #e8a8bd;
+  background: rgba(242, 107, 154, 0.07);
+}
+
+:root[data-theme='dark'] .like-button:hover {
+  border-color: rgba(255, 140, 178, 0.72);
+  color: #ffd4e2;
+  background: rgba(242, 107, 154, 0.2);
+}
+
+:root[data-theme='dark'] .like-button.is-liked {
+  border-color: #ff74a8;
+  color: #08111f;
+  background: #ff9abc;
+  box-shadow: 0 0 0 3px rgba(255, 154, 188, 0.16);
 }
 
 :root[data-theme='dark'] .theme-pull-cord {

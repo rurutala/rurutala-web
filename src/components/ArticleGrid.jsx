@@ -1,4 +1,5 @@
 import { AppLink } from './AppLink'
+import { LikeButton } from './LikeButton'
 import { formatDate } from '../utils/date'
 
 export function ArticleGrid({ articles: gridArticles, navigate }) {
@@ -18,10 +19,11 @@ export function ArticleGrid({ articles: gridArticles, navigate }) {
               <span>{formatDate(article.publishedAt)}</span>
               <span>{article.author}</span>
             </div>
-            <h3>
+            <h3 className="title-with-like">
               <AppLink href={`/articles/${article.id}`} navigate={navigate}>
                 {article.title}
               </AppLink>
+              <LikeButton itemKey={`article:${article.id}`} label={article.title} />
             </h3>
             <p>{article.excerpt}</p>
             <div className="work-tags" aria-label={`${article.title} のタグ`}>

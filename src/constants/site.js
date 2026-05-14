@@ -7,6 +7,7 @@ export const socialLinks = [
 
 export const sortOptions = [
   { value: 'recommended', label: '作者のおすすめ' },
+  { value: 'likes', label: 'みんなのいいね順' },
   { value: 'newest', label: '投稿日時が新しい順' },
   { value: 'oldest', label: '投稿日時が古い順' },
 ]

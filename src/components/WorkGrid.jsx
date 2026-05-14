@@ -1,4 +1,5 @@
 import { AppLink } from './AppLink'
+import { LikeButton } from './LikeButton'
 import { formatWorkDate } from '../utils/date'
 
 export function WorkGrid({ works: gridWorks, navigate }) {
@@ -18,10 +19,11 @@ export function WorkGrid({ works: gridWorks, navigate }) {
               <span>{formatWorkDate(work)}</span>
               <span>{work.author}</span>
             </div>
-            <h3>
+            <h3 className="title-with-like">
               <AppLink href={`/works/${work.id}`} navigate={navigate}>
                 {work.title}
               </AppLink>
+              <LikeButton itemKey={`work:${work.id}`} label={work.title} />
             </h3>
             <p>{work.description}</p>
             <div className="work-tags" aria-label={`${work.title} のタグ`}>

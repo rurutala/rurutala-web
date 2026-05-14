@@ -2,11 +2,13 @@ import { useMemo, useState } from 'react'
 import { WorkGrid } from '../components/WorkGrid'
 import { sortOptions } from '../constants/site'
 import { works, workTags } from '../data/works'
+import { useLikes } from '../hooks/useLikes'
 import { getWorkSortDate } from '../utils/date'
 
 export function WorksPage({ navigate }) {
   const [selectedTag, setSelectedTag] = useState('all')
   const [sortBy, setSortBy] = useState('recommended')
+  const { getLikeCount } = useLikes()
 
   const visibleWorks = useMemo(() => {
     const filteredWorks =
@@ -23,9 +25,16 @@ export function WorksPage({ navigate }) {
         return getWorkSortDate(workA) - getWorkSortDate(workB)
       }
 
+      if (sortBy === 'likes') {
+        return (
+          getLikeCount(`work:${workB.id}`) - getLikeCount(`work:${workA.id}`) ||
+          workB.recommendedRank - workA.recommendedRank
+        )
+      }
+
       return workB.recommendedRank - workA.recommendedRank
     })
-  }, [selectedTag, sortBy])
+  }, [getLikeCount, selectedTag, sortBy])
 
   return (
     <section className="works-page" aria-labelledby="works-page-title">

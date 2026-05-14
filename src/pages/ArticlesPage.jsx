@@ -2,10 +2,12 @@ import { useMemo, useState } from 'react'
 import { ArticleGrid } from '../components/ArticleGrid'
 import { sortOptions } from '../constants/site'
 import { articleTags, articles } from '../data/articles'
+import { useLikes } from '../hooks/useLikes'
 
 export function ArticlesPage({ navigate }) {
   const [selectedTag, setSelectedTag] = useState('all')
   const [sortBy, setSortBy] = useState('recommended')
+  const { getLikeCount } = useLikes()
 
   const visibleArticles = useMemo(() => {
     const filteredArticles =
@@ -22,9 +24,16 @@ export function ArticlesPage({ navigate }) {
         return new Date(articleA.publishedAt) - new Date(articleB.publishedAt)
       }
 
+      if (sortBy === 'likes') {
+        return (
+          getLikeCount(`article:${articleB.id}`) - getLikeCount(`article:${articleA.id}`) ||
+          articleB.recommendedRank - articleA.recommendedRank
+        )
+      }
+
       return articleB.recommendedRank - articleA.recommendedRank
     })
-  }, [selectedTag, sortBy])
+  }, [getLikeCount, selectedTag, sortBy])
 
   return (
     <section className="works-page" aria-labelledby="articles-page-title">

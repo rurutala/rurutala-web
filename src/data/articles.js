@@ -1,5 +1,3 @@
-import heroImg from '../assets/hero.webp'
-
 export const articleTags = ['Info']
 
 export const articles = [

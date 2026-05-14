@@ -1,4 +1,5 @@
 import { AppLink } from '../components/AppLink'
+import { LikeButton } from '../components/LikeButton'
 import { WorkMedia } from '../components/media/WorkMedia'
 import { formatWorkDate } from '../utils/date'
 
@@ -29,7 +30,10 @@ export function WorkDetailPage({ work, navigate }) {
       <header className="work-detail__header">
         <div>
           <p className="work-detail__eyebrow">{work.tags.join(' / ')}</p>
-          <h1>{work.title}</h1>
+          <h1 className="title-with-like title-with-like--detail">
+            <span>{work.title}</span>
+            <LikeButton itemKey={`work:${work.id}`} label={work.title} />
+          </h1>
           <p className="work-detail__meta-line">
             <span>Published {formatWorkDate(work)}</span>
             <span>Author {work.author}</span>

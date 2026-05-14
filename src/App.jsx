@@ -9,6 +9,7 @@ import { ThemePullCord } from './components/layout/ThemePullCord'
 import { Seo } from './components/Seo'
 import { articles } from './data/articles'
 import { works } from './data/works'
+import { LikesProvider } from './hooks/useLikes'
 import { useRoute } from './hooks/useRoute'
 import { ArticleDetailPage } from './pages/ArticleDetailPage'
 import { ArticlesPage } from './pages/ArticlesPage'
@@ -38,27 +39,29 @@ function App() {
         <OpeningAnimation onFinish={() => setIsOpeningVisible(false)} />
       )}
 
-      <main className="site-shell" aria-label="rurutala.net">
-        <SiteHeader
-          currentRoute={route}
-          isMenuOpen={isMenuOpen}
-          navigate={navigate}
-          setIsMenuOpen={setIsMenuOpen}
-        />
+      <LikesProvider>
+        <main className="site-shell" aria-label="rurutala.net">
+          <SiteHeader
+            currentRoute={route}
+            isMenuOpen={isMenuOpen}
+            navigate={navigate}
+            setIsMenuOpen={setIsMenuOpen}
+          />
 
-        {route.name === 'home' && <HomePage navigate={navigate} />}
-        {route.name === 'works' && <WorksPage navigate={navigate} />}
-        {route.name === 'workDetail' && (
-          <WorkDetailPage navigate={navigate} work={currentWork} />
-        )}
-        {route.name === 'articles' && <ArticlesPage navigate={navigate} />}
-        {route.name === 'articleDetail' && (
-          <ArticleDetailPage article={currentArticle} navigate={navigate} />
-        )}
-        {route.name === 'profile' && <ProfilePage />}
+          {route.name === 'home' && <HomePage navigate={navigate} />}
+          {route.name === 'works' && <WorksPage navigate={navigate} />}
+          {route.name === 'workDetail' && (
+            <WorkDetailPage navigate={navigate} work={currentWork} />
+          )}
+          {route.name === 'articles' && <ArticlesPage navigate={navigate} />}
+          {route.name === 'articleDetail' && (
+            <ArticleDetailPage article={currentArticle} navigate={navigate} />
+          )}
+          {route.name === 'profile' && <ProfilePage />}
 
-        <SiteFooter />
-      </main>
+          <SiteFooter />
+        </main>
+      </LikesProvider>
       <ThemePullCord />
       <DynamicFavicon />
       <ScrollTopButton />
