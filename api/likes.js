@@ -1,22 +1,13 @@
 /* global process */
 
-import mysql from 'mysql2/promise'
+import { cert, getApps, initializeApp } from 'firebase-admin/app'
+import { FieldValue, getFirestore } from 'firebase-admin/firestore'
 
+const COLLECTION_NAME = 'like_counts'
 const ITEM_KEY_PATTERN = /^(work|article):[a-z0-9-]+$/
 
 const memoryStore = globalThis.__rurutalaLikes ?? new Map()
 globalThis.__rurutalaLikes = memoryStore
-
-let pool = null
-let isSchemaReady = false
-
-function getSslConfig() {
-  if (process.env.MYSQL_SSL !== 'true') {
-    return undefined
-  }
-
-  return {}
-}
 
 function sendJson(response, statusCode, payload) {
   response.statusCode = statusCode
@@ -47,113 +38,117 @@ function getRequestBody(request) {
   })
 }
 
-function hasMysqlConfig() {
-  return Boolean(
-    process.env.DATABASE_URL ||
-    process.env.MYSQL_URL ||
-    (process.env.MYSQL_HOST && process.env.MYSQL_DATABASE && process.env.MYSQL_USER),
-  )
-}
-
-function createPool() {
-  const uri = process.env.DATABASE_URL ?? process.env.MYSQL_URL
-
-  if (uri) {
-    return mysql.createPool({
-      uri,
-      ssl: getSslConfig(),
-      connectionLimit: 5,
-      enableKeepAlive: true,
-      waitForConnections: true,
-    })
-  }
-
-  return mysql.createPool({
-    host: process.env.MYSQL_HOST,
-    port: Number(process.env.MYSQL_PORT ?? 3306),
-    database: process.env.MYSQL_DATABASE,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
-    connectionLimit: 5,
-    enableKeepAlive: true,
-    waitForConnections: true,
-    ssl: getSslConfig(),
-  })
-}
-
-function getPool() {
-  if (!hasMysqlConfig()) {
+function parseServiceAccountJson() {
+  if (!process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
     return null
   }
 
-  if (!pool) {
-    pool = createPool()
-  }
-
-  return pool
+  return JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON)
 }
 
-async function ensureSchema(database) {
-  if (isSchemaReady) {
-    return
+function getFirebaseCredentialConfig() {
+  const serviceAccount = parseServiceAccountJson()
+
+  if (serviceAccount) {
+    return {
+      credential: cert({
+        ...serviceAccount,
+        private_key: serviceAccount.private_key?.replace(/\\n/g, '\n'),
+      }),
+    }
   }
 
-  await database.execute(`
-    CREATE TABLE IF NOT EXISTS like_counts (
-      item_key VARCHAR(191) NOT NULL PRIMARY KEY,
-      like_count INT UNSIGNED NOT NULL DEFAULT 0,
-      updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-  `)
+  if (
+    !process.env.FIREBASE_PROJECT_ID ||
+    !process.env.FIREBASE_CLIENT_EMAIL ||
+    !process.env.FIREBASE_PRIVATE_KEY
+  ) {
+    return null
+  }
 
-  isSchemaReady = true
+  return {
+    credential: cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+    }),
+  }
 }
 
-async function getCountsFromMysql(database) {
-  await ensureSchema(database)
+function getDatabase() {
+  const config = getFirebaseCredentialConfig()
 
-  const [rows] = await database.execute('SELECT item_key, like_count FROM like_counts')
+  if (!config) {
+    return null
+  }
+
+  if (!getApps().length) {
+    initializeApp(config)
+  }
+
+  return getFirestore()
+}
+
+async function getCountsFromFirestore(database) {
+  const snapshot = await database.collection(COLLECTION_NAME).get()
 
   return Object.fromEntries(
-    rows.map((row) => [row.item_key, Number(row.like_count) || 0]),
+    snapshot.docs.map((document) => [
+      document.id,
+      Number(document.data().like_count) || 0,
+    ]),
   )
 }
 
-async function incrementMysqlCount(database, itemKey, delta) {
-  await ensureSchema(database)
+async function incrementFirestoreCount(database, itemKey, delta) {
+  const documentRef = database.collection(COLLECTION_NAME).doc(itemKey)
 
-  await database.execute(
-    `
-      INSERT INTO like_counts (item_key, like_count)
-      VALUES (?, ?)
-      ON DUPLICATE KEY UPDATE like_count = GREATEST(0, CAST(like_count AS SIGNED) + ?)
-    `,
-    [itemKey, Math.max(0, delta), delta],
-  )
+  if (delta > 0) {
+    await documentRef.set(
+      {
+        item_key: itemKey,
+        like_count: FieldValue.increment(1),
+        updated_at: FieldValue.serverTimestamp(),
+      },
+      { merge: true },
+    )
+  } else {
+    await database.runTransaction(async (transaction) => {
+      const snapshot = await transaction.get(documentRef)
+      const currentCount = Number(snapshot.data()?.like_count) || 0
+      const nextCount = Math.max(0, currentCount - 1)
 
-  const [rows] = await database.execute(
-    'SELECT like_count FROM like_counts WHERE item_key = ? LIMIT 1',
-    [itemKey],
-  )
+      transaction.set(
+        documentRef,
+        {
+          item_key: itemKey,
+          like_count: nextCount,
+          updated_at: FieldValue.serverTimestamp(),
+        },
+        { merge: true },
+      )
+    })
+  }
 
-  return Number(rows[0]?.like_count) || 0
+  const updatedSnapshot = await documentRef.get()
+  return Number(updatedSnapshot.data()?.like_count) || 0
 }
 
 async function getCounts() {
-  const database = getPool()
+  const database = getDatabase()
 
   if (database) {
-    return getCountsFromMysql(database)
+    return getCountsFromFirestore(database)
   }
 
   return Object.fromEntries(memoryStore)
 }
 
 async function incrementCount(itemKey, delta) {
-  const database = getPool()
+  const database = getDatabase()
 
   if (database) {
-    return incrementMysqlCount(database, itemKey, delta)
+    return incrementFirestoreCount(database, itemKey, delta)
   }
 
   const nextCount = Math.max(0, (memoryStore.get(itemKey) ?? 0) + delta)
