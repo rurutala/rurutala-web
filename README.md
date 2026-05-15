@@ -17,3 +17,16 @@ If you are developing a production application, we recommend using TypeScript wi
 
 ## Credits
 - Icons by [Icons8](https://icons8.com)
+
+## Like Count Storage
+
+The heart count API stores totals in MySQL when database environment variables are set.
+Use one of these connection styles:
+
+- `DATABASE_URL=mysql://user:password@host:3306/database_name`
+- `MYSQL_URL=mysql://user:password@host:3306/database_name`
+- `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_DATABASE`, `MYSQL_USER`, `MYSQL_PASSWORD`
+
+The API creates the `like_counts` table automatically. The same schema is also available in `database/like_counts.sql`.
+
+If no MySQL environment variables are set, the API falls back to temporary in-memory counts for local development.

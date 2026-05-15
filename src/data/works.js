@@ -156,8 +156,8 @@ export const works = [
       videos: [
         {
           title: 'カラーコネクト',
-          src: asset('PG/PG_COLORCONNECT/colorconnect_movie.mkv'),
-          type: 'video/x-matroska',
+          src: asset('PG/PG_COLORCONNECT/colorconnect_movie.mp4'),
+          type: 'video/mp4',
           poster: asset('PG/PG_COLORCONNECT/colorconnect1.webp'),
         },
       ],
@@ -631,6 +631,20 @@ export const works = [
     recommendedRank: 55,
     coverImagePosition: 'center 40%',
     media: { images: [asset('ILLUST/ILLUST_TYOKO/tyoko.webp')] },
+    sections: templates.illustration,
+  }),
+  createWork({
+    id: 'illust-natsu-bando',
+    title: 'ナツ(バンド)',
+    subtitle: 'ブルーアーカイブ放課後スイーツ部 ナツ(バンド)の二次創作イラスト。',
+    description: 'ブルーアーカイブ放課後スイーツ部 ナツ(バンド)の二次創作イラスト。',
+    tags: [workTags[1]],
+    publishedAt: '2026-05-15',
+    dateLabel: '2026/5/15',
+    sortDate: '2026-05-15',
+    recommendedRank: 201,
+    coverImagePosition: 'center 10%',
+    media: { images: [asset('ILLUST/ILLUST_NATSU(BANDO)/natsu-bando.webp')] },
     sections: templates.illustration,
   }),
 ]
