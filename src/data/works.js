@@ -406,8 +406,8 @@ export const works = [
       videos: [
         {
           title: '世界最長の勇者パーティは数の暴力で魔王を撃退するようです',
-          src: asset('PG/PG_SAITYOU/saityou.mkv'),
-          type: 'video/x-matroska',
+          src: asset('PG/PG_SAITYOU/saityou.mp4'),
+          type: 'video/mp4',
           poster: asset('PG/PG_SAITYOU/saityou0.webp'),
         },
       ],
