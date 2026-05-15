@@ -79,6 +79,10 @@ function getDatabase() {
   const config = getFirebaseCredentialConfig()
 
   if (!config) {
+    if (process.env.VERCEL) {
+      throw new Error('Firebase credentials are not configured')
+    }
+
     return null
   }
 
