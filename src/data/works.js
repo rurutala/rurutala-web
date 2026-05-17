@@ -205,7 +205,12 @@ export const works = [
         asset('LIVE2D/minamov2-4.webp'),
       ],
     },
-    sections: templates.live2d,
+    sections: [
+      {
+        heading: 'メモ',
+        body: '顔の表情や全体の動きが前回よりも良くなりました。\nが、\n制作から時間が経ち、またイラストから制作を行おうと考えています。',
+      },
+    ],
   }),
   createWork({
     id: 'minamo-rua-3dcg',
@@ -265,7 +270,20 @@ export const works = [
         asset('PG/PG_ERUPTION/eruption6.gif'),
       ],
     },
-    sections: templates.pg,
+    sections: [
+      {
+        heading: '概要',
+        body: 'インターン5daysで4人チームで作成した作品。\n島でのサバイバルで何日生き残れるかを挑戦します。',
+      },
+      {
+        heading: '担当箇所',
+        body: '-Inventoryシステム及びItemの仕様\n-イベント時カメラ機能\n-タイトル及びゲームオーバー\n-Audio関連\n-その他基板開発や共同開発',
+      },
+      {
+        heading: 'メモ',
+        body: 'チーム開発において自分の作成した機能を呼び出す上で簡単に作れるような実装方法やプログラマーが多数で近しい機能を共同開発することがなかったので良い経験になりました。また、衝突が起きないようなタスクの管理の方法などをチームメンバーを通して理解していくことができました。',
+      },
+    ],
   }),
   createWork({
     id: 'notes-knights',
@@ -363,7 +381,20 @@ export const works = [
         asset('PG/PG_DANGO/dango-2.webp'),
       ],
     },
-    sections: templates.pg,
+    sections: [
+      {
+        heading: '概要',
+        body: 'サークルの中で3dayの中で3人のチームで開発を行いました。タワーディフェンスのゲームになっており、プレイヤーは中央の団子を木から守るゲームです。\nまた、木を倒すごとに灰を落とし集めるとスキルを発動できるようになりスキルを上手に使うことで耐えることができます。',
+      },
+      {
+        heading: '担当箇所',
+        body: 'プレイヤーの移動や攻撃\n\nスキルシステム\n-三方向攻撃\n-デコイ(敵の木を桜に変えて敵の木を一定時間引き付ける)\n-バリア',
+      },
+      {
+        heading: 'メモ',
+        body: '3日間という短い期間でしたがタスクの分担などをしっかり行い最後まで制作することができました。またこの機会にGithubやsourcetreeを使った管理が学べたことが大変良かったです。',
+      },
+    ],
   }),
   createWork({
     id: 'kudamono-samurai-online',
@@ -386,7 +417,12 @@ export const works = [
         asset('PG/PG_SAMURAI/samurai5.webp'),
       ],
     },
-    sections: templates.pg,
+    sections: [
+      {
+        heading: '概要',
+        body: '約2日で制作したリアルタイム早押しバトルゲーム。\nUnityを使ったネットワークについて触れてみたくPUN2を使ったリアルタイムオンラインゲームを作成しました。クイックマッチとパスワードマッチを作成して、マッチを行います。対戦初めと終わりにカットイン演出が入ります。\nシンプルな機能を実装しながらPUN2の仕様について触れることができました。',
+      },
+    ],
   }),
   createWork({
     id: 'sweets-bang',
@@ -407,7 +443,12 @@ export const works = [
         asset('PG/PG_SWEETSBANG/sweetsbang3.webp'),
       ],
     },
-    sections: templates.pg,
+    sections: [
+      {
+        heading: '概要',
+        body: 'サークル内ゲームジャムにて作成を行いました。主にプログラム全般を担当しました。\nシンプルな会話画面や、お菓子を詰めるという機能を実装しながらゲーム画面の背景なども担当出来ました。',
+      },
+    ],
   }),
   createWork({
     id: 'magic-magic',
@@ -427,7 +468,12 @@ export const works = [
         asset('PG/PG_MAGICMAGIC/magicmagic3.webp'),
       ],
     },
-    sections: templates.pg,
+    sections: [
+      {
+        heading: '概要',
+        body: '3日間で学祭期間のライブで作成した簡単なシューティングゲームです。\n実装したい機能を3日間で実装するという目標のもと、当日ライブで作成し実装を行うことが出来ました。\n属性切り替えやスキルの実装、ダッシュといった機能を作成したのでこれらを使った面白味のあるステージを作成する所まで出来なかったことが残念でしたが目標は達成できたので良かったと思います。',
+      },
+    ],
   }),
   createWork({
     id: 'deadoralive',
@@ -449,7 +495,20 @@ export const works = [
         asset('PG/PG_DOA/deadoralive6.webp'),
       ],
     },
-    sections: templates.pg,
+    sections: [
+      {
+        heading: '概要',
+        body: '4人メンバーで約半年作成を行った脱出ゲーム。\n部屋数(17)やギミック(40ぐらい)、マルチエンディングとボリュームがある作品になっております。\nアイデア出しなどは放課後などや休みに集まって考案をして固めていきました。その後は部屋のギミックやインベントリなどの基盤となるシステムを私が作成を行い汎用的に作成できるようにしてもらいました。その後は休みでも朝から晩までDiscordなどで作業を行って開発を行っていきました。\n\n半年という期間で初めての共同制作でしたが良い経験になりました。',
+      },
+      {
+        heading: '制作の流れ',
+        body: 'ゲーム案を考案\n↓\n謎解きなどの部屋構成など設定\n↓\n基盤システムを作成(私)\n↓\n汎用的な部屋のギミックを全員で作成\n↓\nマニュアルや動画を作成',
+      },
+      {
+        heading: '使用技術',
+        body: 'C# WindowsFormApplication',
+      },
+    ],
   }),
   createWork({
     id: 'saityou-yuusha-party',
@@ -514,7 +573,16 @@ export const works = [
         },
       ],
     },
-    sections: templates.pg,
+    sections: [
+      {
+        heading: '概要',
+        body: '部屋の中に敵がいるかもしれない、でもVR視点からは見えない。そこでドローンを使って索敵をすることで先手を打つVRゲームです。\nVRの視認性を生かした探索システムのゲームを最大限に生かした体験になるように意識して開発を行いました。\n今後はよりステルスを重視した体の露出度や音による検知、ドローンを使って倒せない俳諧者を捌くラストミッションを検討しています。',
+      },
+      {
+        heading: '使用技術',
+        body: 'Unity XR',
+      },
+    ],
   }),
   createWork({
     id: 'kaze-yadoru-douketsu',
