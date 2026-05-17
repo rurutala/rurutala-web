@@ -110,10 +110,11 @@ function createWork({
   coverImagePosition = 'center',
   links = [],
   media = {},
-  sections,
+  sections = [],
 }) {
   const firstImage = media.images?.[0]
   const firstVideoPoster = media.videos?.find((video) => video.poster)?.poster
+  const visibleSections = sections.filter((section) => section.heading && section.body)
 
   return {
     id,
@@ -129,7 +130,7 @@ function createWork({
     coverImage: coverImage || firstImage || firstVideoPoster || heroImg,
     coverImagePosition,
     links,
-    sections,
+    sections: visibleSections,
     media,
   }
 }
@@ -145,7 +146,10 @@ export const works = [
     dateLabel: '2025/7/ ~ 2025/1',
     sortDate: '2026-01-31',
     recommendedRank: 230,
-    links: [{ label: '作品ページ(UnityRoom)', href: 'https://unityroom.com/games/colorconnect' }],
+    links: [
+      { label: '作品ページ(UnityRoom)', href: 'https://unityroom.com/games/colorconnect' },
+      { label: '作品資料', href: asset('PG/PG_COLORCONNECT/colorconnect_ex.pdf') },
+    ],
     media: {
       images: [
         asset('PG/PG_COLORCONNECT/colorconnect1.webp'),
@@ -162,7 +166,24 @@ export const works = [
         },
       ],
     },
-    sections: templates.pg,
+    sections: [
+      {
+        heading: '概要',
+        body: 'PGからイラストなど多くの作品を作成してきた知識と経験を活かして、現状できる最大限の作品を作成したいと考え制作に至りました。テーマは2Dアクション×複数人プレイが可能なワイワイ遊べるゲームを目標に「色」をテーマにした作品です。',
+      },
+      {
+        heading: '担当範囲',
+        body: '個人製作（PG、イラスト）',
+      },
+      {
+        heading: '使用技術',
+        body: '環境\nUnity6, C#\n\nライブラリ\nDoTween, UniTask, R3',
+      },
+      {
+        heading: 'メモ',
+        body: 'プレイ体験をより良くすることに注力しました。キーコンフィグの実装やプレイヤーのジャンプに関わるバッファ制御といった目に見えない所や、色を使うことがコンセプトのためビビッドなカラーリングとサポートの機能を追加するなど、細かい部分までプレイヤーに不快感を与えることがないように努め、時にはテストプレイやアンケートなどを取りより改善をしてきました。\nその他には新しくR3といったライブラリを実践的に活用できるように日々挑戦してきました。\n具体的な内容は作品資料をご覧ください。',
+      },
+    ],
   }),
   createWork({
     id: 'minamo-rua-live2d-v2',
@@ -205,7 +226,16 @@ export const works = [
         asset('3DCG/minamorua_3d4.webp'),
       ],
     },
-    sections: templates.cg,
+    sections: [
+      {
+        heading: '概要',
+        body: 'オリジナルキャラクター水面ルアの3DCG作品です。\nほぼ初めてのBlenderでしたが最後まで作成できたことがまず良かったと思います。ですが、完成度はまだまだなのでいつかリベンジしたいです。',
+      },
+      {
+        heading: '制作内容',
+        body: 'モデリング、ボーン、シェイプキー、ウェイトペイント',
+      },
+    ],
   }),
   createWork({
     id: 'eruption',
@@ -247,7 +277,10 @@ export const works = [
     dateLabel: '2024/8/ ~ 10/31',
     sortDate: '2024-10-31',
     recommendedRank: 156,
-    links: [{ label: '作品ページ(UnityRoom)', href: 'https://unityroom.com/games/notesknights' }],
+    links: [
+      { label: '作品ページ(UnityRoom)', href: 'https://unityroom.com/games/notesknights' },
+      { label: '操作説明', href: asset('PG/PG_NOTESKNIGHTS/NotesKnights.pdf') },
+    ],
     media: {
       images: [
         asset('PG/PG_NOTESKNIGHTS/notesknights0.png'),
@@ -259,7 +292,20 @@ export const works = [
         asset('PG/PG_NOTESKNIGHTS/notesknights6.webp'),
       ],
     },
-    sections: templates.pg,
+    sections: [
+      {
+        heading: '概要',
+        body: 'アークナイツという作品を参考にした3Dタワーディフェンス×ローグライク作品です。6人で約1カ月で制作しました。\n3D作品を創る機会が少なかったため1カ月でこのシステムに挑戦し形にすることが出来て非常に良かった経験だと思います。',
+      },
+      {
+        heading: '担当範囲',
+        body: 'Unity周り、プログラム全般',
+      },
+      {
+        heading: 'メモ',
+        body: '【反省点】\n敵の進行の実装をこちらで配置したポイントに直線的に移動していくように実装をしているため、進行不可に陥る可能性を含んでいるので移動方式をNavMeshAgentを併用してスムーズに移動を行えるように実装を行うことが出来れば、より良い作品に仕上げることが出来たと思います。',
+      },
+    ],
   }),
   createWork({
     id: 'deainder',
@@ -280,7 +326,24 @@ export const works = [
         asset('PG/PG_DEAIINDER/deainder3.webp'),
       ],
     },
-    sections: templates.pg,
+    sections: [
+      {
+        heading: '概要',
+        body: 'Unity1Weekで開発したゲーム作品です。期間は伸びてしまいましたが非常にためになる経験になりました。\n\nゲームプログラマーとして働いているメンバーとの共同開発で、自身の知らない知識、技術やチームで開発する上で意識する点などを学ぶことが出来ました。普段主に一人で開発を行っているときには出来ていなかった、部品ごとに機能を分けて開発を行うことや、コードの空気を読むといったこれまででは意識の外にあったことについて気づくことが出来ました。',
+      },
+      {
+        heading: '担当範囲',
+        body: 'ペア選択\nプロフィール詳細\n会話パートなど',
+      },
+      {
+        heading: '使用技術',
+        body: 'ライブラリ\nUniTask, R3\n\nパターンなど\nクリーンアーキテクチャ, MVRPパターン, サービスロケータ',
+      },
+      {
+        heading: 'メモ',
+        body: '個人製作で必要だろうと感じていたUniTaskであったりデザインパターンであったり、現場で開発するための技術というようなものに初めて触れ圧倒された開発でした。',
+      },
+    ],
   }),
   createWork({
     id: 'dango-no-unmei',
@@ -412,7 +475,24 @@ export const works = [
         },
       ],
     },
-    sections: templates.pg,
+    sections: [
+      {
+        heading: '概要',
+        body: 'プレイヤーの移動する方向を操作し、多くのNPCを仲間にして敵を倒すゲームです。マップに落ちているアイテムなどを拾いボスを倒すことで勝利となります。',
+      },
+      {
+        heading: '担当箇所',
+        body: 'NPCのシステム（ステータス、攻撃、追尾処理など全般）\nボス（黒騎士）の実装\n宝箱の実装\n音周りの実装\nタイトル画面、ゲームオーバー画面の実装',
+      },
+      {
+        heading: '使用した技術',
+        body: 'クリーンアーキテクチャ\nR3, UniTask, VContainer',
+      },
+      {
+        heading: 'メモ',
+        body: 'UniTaskやR3に触れたDeainderから、よりR3であったりインターフェースの理解を進めることが出来ていたことを再認識できた作品でした。\n\nもっと良いコードを作成できるようなエンジニアになりたいと思いました。',
+      },
+    ],
   }),
   createWork({
     id: 'double-cross',
@@ -457,7 +537,20 @@ export const works = [
       ],
       audio: [{ title: '風宿る洞穴', src: asset('MUSIC/douketu.wav') }],
     },
-    sections: templates.music,
+    sections: [
+      {
+        heading: '概要',
+        body: '神秘的ではあるもののどこかものがなしく不安になるようなイメージで作曲しました。序盤でテーマの洞穴に引き寄せられ内部に引き寄せられると風の音が聞こえてきます。一定のフレーズに音を重ねていき単調さを感じさせないように意識をしてしました。\n\n最終的にこの洞穴から脱出したのかはたまた...',
+      },
+      {
+        heading: '使用ツール',
+        body: 'Studio One 6 Artist',
+      },
+      {
+        heading: 'メモ',
+        body: 'ピアノフレーズを実際に引きながらたくさん悩みました。いいフレーズが出来たと思います！',
+      },
+    ],
   }),
   createWork({
     id: 'masked-dedede-full-flavor',
@@ -477,7 +570,16 @@ export const works = [
         },
       ],
     },
-    sections: templates.music,
+    sections: [
+      {
+        heading: 'ジャンル',
+        body: 'HardStyle\nArtcore\nChiptune\nKawaii Future Bass\nDubStep\nHi-tech\nTrance\nHardStyle',
+      },
+      {
+        heading: 'メモ',
+        body: '初心者が1dayでやる内容ではありませんでした。ですが、多くのジャンルに挑戦し、雰囲気を掴むという点では非常によい経験になりました。非常に！大変でした！',
+      },
+    ],
   }),
   createWork({
     id: 'illustration-beginner-course',
@@ -498,7 +600,12 @@ export const works = [
         },
       ],
     },
-    sections: templates.movie,
+    sections: [
+      {
+        heading: 'メモ',
+        body: '映像編集に少し慣れることが出来てよかったです！',
+      },
+    ],
   }),
   createWork({
     id: 'rapsody-mv',
@@ -519,7 +626,12 @@ export const works = [
         },
       ],
     },
-    sections: templates.movie,
+    sections: [
+      {
+        heading: '概要',
+        body: 'MV制作企画にてイラスト及び映像制作を担当しました。\n一枚絵での制作ではなく、アニメーションを用いて制作を行ったため、よりよく見えるように工夫をしながら制作を行いました。\nまた、動画編集にはAfter Effectsを使用し、動画編集の技術の向上になりました。\n一か月ほど取り組み完成することが出来たので非常に達成感がある作品です。',
+      },
+    ],
   }),
   createWork({
     id: 'illust-ema',
@@ -547,7 +659,12 @@ export const works = [
     recommendedRank: 120,
     coverImagePosition: 'center 40%',
     media: { images: [asset('ILLUST/ILLUST_LEUR/leur.webp')] },
-    sections: templates.illustration,
+    sections: [
+      {
+        heading: 'メモ',
+        body: '資料をたくさん見てたくさん吟味するようになってルルネ同様に絵の全体的な完成度が上がりました！',
+      },
+    ],
   }),
   createWork({
     id: 'illust-rua-1',
@@ -561,7 +678,12 @@ export const works = [
     recommendedRank: 150,
     coverImagePosition: 'center 10%',
     media: { images: [asset('ILLUST/ILLUST_RUA_1/rua.webp')] },
-    sections: templates.illustration,
+    sections: [
+      {
+        heading: 'メモ',
+        body: 'ヴィネット風のイラストに挑戦して、エフェクトや攻撃などかっこよく描けるように頑張りました。おへそも頑張りました。',
+      },
+    ],
   }),
   createWork({
     id: 'illust-rua-2',
@@ -575,7 +697,12 @@ export const works = [
     recommendedRank: 160,
     coverImagePosition: 'center 40%',
     media: { images: [asset('ILLUST/ILLUST_RUA_2/rua.webp')] },
-    sections: templates.illustration,
+    sections: [
+      {
+        heading: 'メモ',
+        body: '顔は良い！けど！振り向いてる首回りが何かおかしい！のが反省点です。\nちょっとまた絵柄を迷走した絵でもあるかもしれません。線の太さとかもちょっと太めに描いたはず...',
+      },
+    ],
   }),
   createWork({
     id: 'illust-rurune',
@@ -589,7 +716,12 @@ export const works = [
     recommendedRank: 210,
     coverImagePosition: 'center 40%',
     media: { images: [asset('ILLUST/ILLUST_RURUNE/rurune.webp')] },
-    sections: templates.illustration,
+    sections: [
+      {
+        heading: 'メモ',
+        body: 'VRChatでのシチュエーションを創造し、具体的な背景などを取り入れました。資料を今まで以上に集めて参考にし意識して絵を描くようになり、この時期から個人的に大きく成長したと感じる作品です。\n\nルルネちゃんが可愛いのも要因ですね。',
+      },
+    ],
   }),
   createWork({
     id: 'illust-4bansen',
@@ -603,7 +735,12 @@ export const works = [
     recommendedRank: 155,
     coverImagePosition: 'center 20%',
     media: { images: [asset('ILLUST/ILLUST_4BANSEN/yonbansen.webp')] },
-    sections: templates.illustration,
+    sections: [
+      {
+        heading: 'メモ',
+        body: '限られた色の中でⅣ番線ちゃんの可愛さや無邪気そうな所などを表現できるように資料やラフを繰り返して完成まで頑張りました。とてもかわいく描けて満足です。',
+      },
+    ],
   }),
   createWork({
     id: 'illust-the-hole',
@@ -617,7 +754,12 @@ export const works = [
     recommendedRank: 186,
     coverImagePosition: 'center 40%',
     media: { images: [asset('ILLUST/ILLUST_THEHOLE/thehole.webp')] },
-    sections: templates.illustration,
+    sections: [
+      {
+        heading: 'メモ',
+        body: '直近では構図集など色々参考にして普段イラストを描いているのですが、今回は構図などを一から自分でラフなどを作成しながら完成させました。サングラスを中心にミクとレイを描けて満足です。',
+      },
+    ],
   }),
   createWork({
     id: 'illust-tyoko',
@@ -631,7 +773,12 @@ export const works = [
     recommendedRank: 55,
     coverImagePosition: 'center 40%',
     media: { images: [asset('ILLUST/ILLUST_TYOKO/tyoko.webp')] },
-    sections: templates.illustration,
+    sections: [
+      {
+        heading: 'メモ',
+        body: 'ラスピリ10周年おめでとう！！\nお顔が可愛く描けて満足',
+      },
+    ],
   }),
   createWork({
     id: 'illust-natsu-bando',
@@ -645,7 +792,12 @@ export const works = [
     recommendedRank: 189,
     coverImagePosition: 'center 10%',
     media: { images: [asset('ILLUST/ILLUST_NATSU(BANDO)/natsu-bando.webp')] },
-    sections: templates.illustration,
+    sections: [
+      {
+        heading: 'メモ',
+        body: 'ルルネ辺りからの絵柄がまとまってきていると感じます。5時間半で完成した作品でもあり自身でも驚いてます。\n\nカラーラフを書き込んでイメージをつけてから線画に進むと完成度も上がることが分かり自分には合っていそうとより感じます。',
+      },
+    ],
   }),
   createWork({
     id: 'suisaiga-fishing-minigame',
@@ -658,8 +810,26 @@ export const works = [
     sortDate: '2026-05-17',
     recommendedRank: 190,
     coverImagePosition: 'center',
+    links: [{ label: 'Steamへ', href: 'https://store.steampowered.com/app/4389120/_/' }],
     media: { images: [asset('PG/PG_SUISAIGA/suisaiga_00.webp')] },
-    sections: templates.pg,
+    sections: [
+      {
+        heading: '概要',
+        body: 'ポイント＆クリックアドベンチャーゲーム『水彩画は水底に沈む』のミニゲームの組み込み、プログラムを担当しました。\n\n本編も多くの良いイラストと音楽、ストーリーなどあるのでまずはぜひ遊んでみてください。',
+      },
+      {
+        heading: '担当箇所',
+        body: '釣りミニゲーム',
+      },
+      {
+        heading: '使用技術',
+        body: 'UniTask',
+      },
+      {
+        heading: 'メモ',
+        body: '演出周りや図鑑など試行錯誤してます。3Dモデルを使ったちょっと面白い空間でありつつ世界観が保たれるように、UIや演出なども意識してます。ぜひ！遊んでみてください。',
+      },
+    ],
   }),
 ]
 
