@@ -916,7 +916,12 @@ export const works = [
         asset('ILLUST/ILLUST_UZAWA/uzawa2.webp'),
       ],
     },
-    sections: templates.illustration,
+    sections: [
+      {
+        heading: 'メモ',
+        body: '初めて2,000いいねもらえてちょううれしかった！',
+      },
+    ],
   }),
   createWork({
     id: 'illust-hikanozo',
@@ -930,7 +935,12 @@ export const works = [
     recommendedRank: 203,
     coverImagePosition: 'center 20%',
     media: { images: [asset('ILLUST/ILLUST_HIKANOZO/hikari-nozomi.webp')] },
-    sections: templates.illustration,
+    sections: [
+      {
+        heading: 'メモ',
+        body: 'こう、お腹が見える服のデザインっていいよね',
+      },
+    ],
   }),
 ]
 
