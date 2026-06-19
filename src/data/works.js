@@ -519,7 +519,7 @@ export const works = [
     publishedAt: '2025-12-28',
     dateLabel: '2025/12/25 ~ 12/28',
     sortDate: '2025-12-28',
-    recommendedRank: 190,
+    recommendedRank: 205,
     media: {
       images: [
         asset('PG/PG_SAITYOU/saityou0.webp'),
@@ -876,7 +876,7 @@ export const works = [
     publishedAt: '2026-05-17',
     dateLabel: '2026/5/17',
     sortDate: '2026-05-17',
-    recommendedRank: 190,
+    recommendedRank: 204,
     coverImagePosition: 'center',
     links: [{ label: 'Steamへ', href: 'https://store.steampowered.com/app/4389120/_/' }],
     media: { images: [asset('PG/PG_SUISAIGA/suisaiga_00.webp')] },
