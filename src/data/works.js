@@ -899,6 +899,39 @@ export const works = [
       },
     ],
   }),
+  createWork({
+    id: 'illust-uzawa-reisa',
+    title: '宇沢レイサ',
+    subtitle: '宇沢レイサの誕生日二次創作イラスト',
+    description: '宇沢レイサの誕生日二次創作イラスト',
+    tags: [workTags[1]],
+    publishedAt: '2026-05-31',
+    dateLabel: '2026/5/31',
+    sortDate: '2026-05-31',
+    recommendedRank: 202,
+    coverImagePosition: 'center 20%',
+    media: {
+      images: [
+        asset('ILLUST/ILLUST_UZAWA/uzawa1.webp'),
+        asset('ILLUST/ILLUST_UZAWA/uzawa2.webp'),
+      ],
+    },
+    sections: templates.illustration,
+  }),
+  createWork({
+    id: 'illust-hikanozo',
+    title: 'ヒカリ ノゾミ',
+    subtitle: 'ヒカリとノゾミの誕生日二次創作イラスト',
+    description: 'ヒカリとノゾミの誕生日二次創作イラスト',
+    tags: [workTags[1]],
+    publishedAt: '2026-06-14',
+    dateLabel: '2026/6/14',
+    sortDate: '2026-06-14',
+    recommendedRank: 203,
+    coverImagePosition: 'center 20%',
+    media: { images: [asset('ILLUST/ILLUST_HIKANOZO/hikari-nozomi.webp')] },
+    sections: templates.illustration,
+  }),
 ]
 
 export const featuredWorks = [...works]
