@@ -960,7 +960,7 @@ export const works = [
     dateLabel: '2026/7/31',
     sortDate: '2026-07-31',
     recommendedRank: 204,
-    coverImagePosition: 'center 20%',
+    coverImagePosition: 'center 40%',
     media: {
       images: [
         asset('ILLUST/ILLUST_2026_7/1.webp'),
