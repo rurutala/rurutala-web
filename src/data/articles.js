@@ -9,7 +9,7 @@ export const articles = [
     author: 'るるたぁ',
     publishedAt: '2026-07-15',
     recommendedRank: 20,
-    coverImage: '/profile.webp',
+    coverImage: '/icon/essay.webp',
     sections: [
       {
         heading: 'はじめに',
@@ -65,7 +65,7 @@ export const articles = [
     author: 'るるたぁ',
     publishedAt: '2026-05-08',
     recommendedRank: 10,
-    coverImage: '/profile.webp',
+    coverImage: '/icon/info.webp',
     sections: [
       {
         heading: 'Hello World',
