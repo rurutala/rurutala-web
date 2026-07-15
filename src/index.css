@@ -1,5 +1,5 @@
 :root {
-  --bg: #fbfaf7;
+  --bg: #fefefe;
   --surface: #ffffff;
   --text-strong: #202124;
   --text-muted: #67625d;
@@ -49,6 +49,7 @@ body {
   min-width: 320px;
   min-height: 100svh;
   margin: 0;
+  background-color: var(--bg);
   transition:
     color 0.35s ease,
     background-color 0.35s ease;
