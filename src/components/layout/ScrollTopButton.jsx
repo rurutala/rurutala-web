@@ -24,7 +24,10 @@ export function ScrollTopButton() {
       aria-label="ページの一番上へ戻る"
       onClick={scrollToTop}
     >
-      <img src="/scroll-top.svg" alt="" />
+      <span className="scroll-top__content" aria-hidden="true">
+        <span className="scroll-top__arrow" />
+        <span className="scroll-top__label">TOP</span>
+      </span>
     </button>
   )
 }

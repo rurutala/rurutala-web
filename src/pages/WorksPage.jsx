@@ -1,14 +1,26 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { WorkGrid } from '../components/WorkGrid'
 import { sortOptions } from '../constants/site'
 import { works, workTags } from '../data/works'
 import { useLikes } from '../hooks/useLikes'
 import { getWorkSortDate } from '../utils/date'
 
+const selectedTagStorageKey = 'works:selected-tag'
+
+function getInitialSelectedTag() {
+  const savedTag = window.sessionStorage.getItem(selectedTagStorageKey)
+
+  return savedTag === 'all' || workTags.includes(savedTag) ? savedTag : 'all'
+}
+
 export function WorksPage({ navigate }) {
-  const [selectedTag, setSelectedTag] = useState('all')
+  const [selectedTag, setSelectedTag] = useState(getInitialSelectedTag)
   const [sortBy, setSortBy] = useState('recommended')
   const { getLikeCount } = useLikes()
+
+  useEffect(() => {
+    window.sessionStorage.setItem(selectedTagStorageKey, selectedTag)
+  }, [selectedTag])
 
   const visibleWorks = useMemo(() => {
     const filteredWorks =

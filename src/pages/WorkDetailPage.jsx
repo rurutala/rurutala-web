@@ -52,7 +52,7 @@ export function WorkDetailPage({ work, navigate }) {
         </div>
       )}
 
-      <WorkMedia enableImageModal={work.tags.includes('イラスト')} media={work.media} title={work.title} />
+      <WorkMedia media={work.media} title={work.title} />
 
       <div className="work-detail__content">
         <aside className="work-detail__side">

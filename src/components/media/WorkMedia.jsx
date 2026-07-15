@@ -1,7 +1,7 @@
 import { AudioWorkPlayer } from './AudioWorkPlayer'
 import { WorkMediaSlider } from './WorkMediaSlider'
 
-export function WorkMedia({ enableImageModal = false, media, title }) {
+export function WorkMedia({ media, title }) {
   const images = media?.images ?? []
   const embeds = media?.embeds ?? []
   const audio = media?.audio ?? []
@@ -36,7 +36,6 @@ export function WorkMedia({ enableImageModal = false, media, title }) {
     <div className="work-media" aria-label={`${title} のメディア`}>
       {sliderItems.length > 0 && (
         <WorkMediaSlider
-          enableImageModal={enableImageModal}
           items={sliderItems}
           key={title}
           title={title}

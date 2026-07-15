@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 
-export function WorkMediaSlider({ enableImageModal = false, items, title }) {
+export function WorkMediaSlider({ items, title }) {
   const [activeIndex, setActiveIndex] = useState(0)
   const [modalImage, setModalImage] = useState(null)
   const dragStartX = useRef(0)
@@ -54,7 +55,13 @@ export function WorkMediaSlider({ enableImageModal = false, items, title }) {
   }
 
   const handlePointerDown = (event) => {
-    if (!hasMultipleItems || event.target.closest('video, iframe, button')) {
+    didDrag.current = false
+
+    if (
+      event.pointerType === 'mouse' ||
+      !hasMultipleItems ||
+      event.target.closest('video, iframe, button')
+    ) {
       return
     }
 
@@ -72,7 +79,6 @@ export function WorkMediaSlider({ enableImageModal = false, items, title }) {
     }
 
     dragDeltaX.current = event.clientX - dragStartX.current
-    didDrag.current = Math.abs(dragDeltaX.current) > 8
   }
 
   const handlePointerUp = (event) => {
@@ -83,10 +89,12 @@ export function WorkMediaSlider({ enableImageModal = false, items, title }) {
     const dragDeltaY = event.clientY - dragStartY.current
     const dragDistance = Math.abs(dragDeltaX.current)
     const isHorizontalDrag = dragDistance > Math.abs(dragDeltaY)
+    const didSwipe = dragDistance >= 56 && isHorizontalDrag
 
     isDragging.current = false
+    didDrag.current = didSwipe
 
-    if (dragDistance < 56 || !isHorizontalDrag) {
+    if (!didSwipe) {
       return
     }
 
@@ -107,6 +115,7 @@ export function WorkMediaSlider({ enableImageModal = false, items, title }) {
         onPointerUp={handlePointerUp}
         onPointerCancel={() => {
           isDragging.current = false
+          didDrag.current = false
         }}
       >
         {activeItem.type === 'image' && (
@@ -118,10 +127,7 @@ export function WorkMediaSlider({ enableImageModal = false, items, title }) {
             onClick={(event) => {
               if (didDrag.current) {
                 event.preventDefault()
-                return
-              }
-
-              if (!enableImageModal) {
+                didDrag.current = false
                 return
               }
 
@@ -188,7 +194,8 @@ export function WorkMediaSlider({ enableImageModal = false, items, title }) {
           ))}
         </div>
       )}
-      {modalImage && (
+      {modalImage &&
+        createPortal(
         <div
           className="image-modal"
           role="dialog"
@@ -205,7 +212,8 @@ export function WorkMediaSlider({ enableImageModal = false, items, title }) {
             ×
           </button>
           <img src={modalImage.src} alt={modalImage.title || title} onClick={(event) => event.stopPropagation()} />
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   )
