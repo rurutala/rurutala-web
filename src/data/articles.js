@@ -3,7 +3,7 @@ export const articleTags = ['Info', 'Essay']
 export const articles = [
   {
     id: 'create-while-the-heat-is-fresh',
-    title: '創作は思い立ったらすぐ行動するべきな話',
+    title: '創作は思い立ったらすぐ行動するべきな話(初心者向け)',
     excerpt: '熱は冷めないうちに',
     tags: ['Essay'],
     author: 'るるたぁ',
