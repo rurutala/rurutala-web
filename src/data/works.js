@@ -712,7 +712,7 @@ export const works = [
     sortDate: '2025-12-31',
     recommendedRank: 100,
     coverImagePosition: 'center 10%',
-    media: { images: [asset('ILLUST/ILLUST_EMA/raf.webp')] },
+    media: { images: [asset('ILLUST/ILLUST_EMA/ema.webp')] },
     sections: templates.illustration,
   }),
   createWork({
@@ -965,6 +965,8 @@ export const works = [
       images: [
         asset('ILLUST/ILLUST_2026_7/1.webp'),
         asset('ILLUST/ILLUST_2026_7/2.webp'),
+        asset('ILLUST/ILLUST_2026_7/3.webp'),
+        asset('ILLUST/ILLUST_2026_7/4.webp'),
       ],
     },
     sections: [
