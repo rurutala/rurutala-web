@@ -101,7 +101,7 @@ function getSeoData(route, work, article) {
   if (route.name === 'workDetail' && work) {
     return {
       title: `${work.title} | るるたぁ works`,
-      description: `${work.subtitle || work.description} - るるたぁ（rurutala）の作品ページ。`,
+      description: `${work.subtitle || work.description || work.title} - るるたぁ（rurutala）の作品ページ。`,
       path: `/works/${work.id}`,
       image: absoluteUrl(work.coverImage),
       type: 'article',

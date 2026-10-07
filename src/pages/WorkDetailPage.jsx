@@ -16,10 +16,12 @@ export function WorkDetailPage({ work, navigate }) {
     )
   }
 
-  const hasVisualMedia =
-    (work.media?.images?.length ?? 0) > 0 ||
-    (work.media?.embeds?.length ?? 0) > 0 ||
-    (work.media?.videos?.length ?? 0) > 0
+  const hasVisualMedia = [work.media, ...work.sections.map((section) => section.media)].some(
+    (media) =>
+      (media?.images?.length ?? 0) > 0 ||
+      (media?.embeds?.length ?? 0) > 0 ||
+      (media?.videos?.length ?? 0) > 0,
+  )
 
   return (
     <article className="work-detail">
@@ -76,7 +78,8 @@ export function WorkDetailPage({ work, navigate }) {
           {work.sections.map((section) => (
             <section key={section.heading}>
               <h2>{section.heading}</h2>
-              <p>{section.body}</p>
+              {section.body && <p>{section.body}</p>}
+              <WorkMedia media={section.media} title={section.heading} />
             </section>
           ))}
         </div>

@@ -11,5 +11,5 @@ export function formatWorkDate(work) {
 }
 
 export function getWorkSortDate(work) {
-  return new Date(work.sortDate || work.publishedAt)
+  return new Date(work.sortDate || work.publishedAt || 0)
 }

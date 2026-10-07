@@ -3,9 +3,9 @@ import { AppLink } from '../components/AppLink'
 import { ArticleGrid } from '../components/ArticleGrid'
 import { WorkGrid } from '../components/WorkGrid'
 import { featuredArticles } from '../data/articles'
-import { featuredWorks, works } from '../data/works'
+import { compareWorksByRecommendation, featuredWorks, works } from '../data/works'
 
-const recommendedWorks = [...works].sort((workA, workB) => workB.recommendedRank - workA.recommendedRank)
+const recommendedWorks = [...works].sort(compareWorksByRecommendation)
 const pinnedOpeningWorkIds = ['illust-rurune', 'illust-the-hole', 'color-connect']
 const pinnedOpeningSlots = [7, 2, 5]
 const dynamicOpeningWorks = recommendedWorks.filter((work) => !pinnedOpeningWorkIds.includes(work.id))

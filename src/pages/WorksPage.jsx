@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
 import { WorkGrid } from '../components/WorkGrid'
+import { AppLink } from '../components/AppLink'
 import { sortOptions } from '../constants/site'
-import { works, workTags } from '../data/works'
+import { compareWorksByRecommendation, works, workTags } from '../data/works'
 import { useLikes } from '../hooks/useLikes'
 import { getWorkSortDate } from '../utils/date'
 
 const selectedTagStorageKey = 'works:selected-tag'
+const sortByStorageKey = 'works:sort-by'
 
 function getInitialSelectedTag() {
   const savedTag = window.sessionStorage.getItem(selectedTagStorageKey)
@@ -13,14 +15,24 @@ function getInitialSelectedTag() {
   return savedTag === 'all' || workTags.includes(savedTag) ? savedTag : 'all'
 }
 
+function getInitialSortBy() {
+  const savedSortBy = window.sessionStorage.getItem(sortByStorageKey)
+
+  return sortOptions.some((option) => option.value === savedSortBy) ? savedSortBy : 'recommended'
+}
+
 export function WorksPage({ navigate }) {
   const [selectedTag, setSelectedTag] = useState(getInitialSelectedTag)
-  const [sortBy, setSortBy] = useState('recommended')
+  const [sortBy, setSortBy] = useState(getInitialSortBy)
   const { getLikeCount } = useLikes()
 
   useEffect(() => {
     window.sessionStorage.setItem(selectedTagStorageKey, selectedTag)
   }, [selectedTag])
+
+  useEffect(() => {
+    window.sessionStorage.setItem(sortByStorageKey, sortBy)
+  }, [sortBy])
 
   const visibleWorks = useMemo(() => {
     const filteredWorks =
@@ -40,11 +52,11 @@ export function WorksPage({ navigate }) {
       if (sortBy === 'likes') {
         return (
           getLikeCount(`work:${workB.id}`) - getLikeCount(`work:${workA.id}`) ||
-          workB.recommendedRank - workA.recommendedRank
+          compareWorksByRecommendation(workA, workB)
         )
       }
 
-      return workB.recommendedRank - workA.recommendedRank
+      return compareWorksByRecommendation(workA, workB)
     })
   }, [getLikeCount, selectedTag, sortBy])
 
@@ -54,6 +66,12 @@ export function WorksPage({ navigate }) {
         <p>Works</p>
         <h1 id="works-page-title">作品一覧</h1>
       </div>
+
+      {import.meta.env.DEV && (
+        <AppLink className="back-link" href="/manage/recommended" navigate={navigate}>
+          おすすめ順を編集
+        </AppLink>
+      )}
 
       <div className="works-toolbar" aria-label="作品の絞り込みと並び替え">
         <div className="tag-filter" aria-label="タグで検索">

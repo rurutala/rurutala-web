@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://rurutala.net/</loc><lastmod>2026-05-06</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://rurutala.net/works</loc><lastmod>2026-05-06</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://rurutala.net/works</loc><lastmod>2026-10-08</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://rurutala.net/profile</loc><lastmod>2026-05-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://rurutala.net/articles</loc><lastmod>2026-07-15</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://rurutala.net/works/color-connect</loc><lastmod>2026-01-31</lastmod><priority>0.7</priority></url>
@@ -34,6 +34,14 @@
   <url><loc>https://rurutala.net/works/illust-uzawa-reisa</loc><lastmod>2026-05-31</lastmod><priority>0.7</priority></url>
   <url><loc>https://rurutala.net/works/illust-2026-06-summary</loc><lastmod>2026-06-30</lastmod><priority>0.7</priority></url>
   <url><loc>https://rurutala.net/works/illust-2026-07-summary</loc><lastmod>2026-07-31</lastmod><priority>0.7</priority></url>
+  <url><loc>https://rurutala.net/works/illust-2026-08-summary</loc><lastmod>2026-08-31</lastmod><priority>0.7</priority></url>
+  <url><loc>https://rurutala.net/works/illust-2026-09-summary</loc><lastmod>2026-09-30</lastmod><priority>0.7</priority></url>
+  <url><loc>https://rurutala.net/works/shadow</loc><lastmod>2026-10-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://rurutala.net/works/shape-boss</loc><lastmod>2026-10-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://rurutala.net/works/my-pace</loc><lastmod>2026-10-06</lastmod><priority>0.7</priority></url>
+  <url><loc>https://rurutala.net/works/pg-other</loc><lastmod>2026-10-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://rurutala.net/works/rapid-mv</loc><lastmod>2025-08-25</lastmod><priority>0.7</priority></url>
+  <url><loc>https://rurutala.net/works/minamo-rua-live2d-v3</loc><lastmod>2026-09-21</lastmod><priority>0.7</priority></url>
   <url><loc>https://rurutala.net/articles/create-while-the-heat-is-fresh</loc><lastmod>2026-07-15</lastmod><priority>0.5</priority></url>
   <url><loc>https://rurutala.net/articles/personal-site-open</loc><lastmod>2026-05-08</lastmod><priority>0.5</priority></url>
 </urlset>

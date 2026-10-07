@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react'
 
 function getRoute(pathname) {
+  if (import.meta.env.DEV && pathname === '/manage/recommended') {
+    return { name: 'recommendedEditor' }
+  }
+
   if (pathname === '/works') {
     return { name: 'works' }
   }

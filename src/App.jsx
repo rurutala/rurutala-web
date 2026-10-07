@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import './App.css'
 import { OpeningAnimation } from './components/OpeningAnimation'
 import { DynamicFavicon } from './components/layout/DynamicFavicon'
@@ -19,6 +19,10 @@ import { ProfilePage } from './pages/ProfilePage'
 import { WorkDetailPage } from './pages/WorkDetailPage'
 import { WorksPage } from './pages/WorksPage'
 import { shouldShowOpening } from './utils/opening'
+
+const RecommendedOrderPage = import.meta.env.DEV
+  ? lazy(() => import('./pages/RecommendedOrderPage'))
+  : null
 
 function App() {
   const { route, navigate } = useRoute()
@@ -51,6 +55,11 @@ function App() {
 
           {route.name === 'home' && <HomePage navigate={navigate} />}
           {route.name === 'works' && <WorksPage navigate={navigate} />}
+          {import.meta.env.DEV && route.name === 'recommendedEditor' && (
+            <Suspense fallback={<p role="status">Now Loading...</p>}>
+              <RecommendedOrderPage navigate={navigate} />
+            </Suspense>
+          )}
           {route.name === 'workDetail' && (
             <WorkDetailPage navigate={navigate} work={currentWork} />
           )}

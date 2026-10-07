@@ -1,4 +1,5 @@
 import heroImg from '../assets/hero.webp'
+import recommendedOrder from './recommended-order.json'
 
 const asset = (path) => `/assets/${path}`
 const youtubeThumbnail = (videoId) => `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
@@ -114,7 +115,9 @@ function createWork({
 }) {
   const firstImage = media.images?.[0]
   const firstVideoPoster = media.videos?.find((video) => video.poster)?.poster
-  const visibleSections = sections.filter((section) => section.heading && section.body)
+  const visibleSections = sections.filter(
+    (section) => section.heading && (section.body || section.media?.images?.length),
+  )
 
   return {
     id,
@@ -136,6 +139,87 @@ function createWork({
 }
 
 export const works = [
+  createWork({
+    id: 'shadow',
+    title: 'SHADOW',
+    subtitle: '',
+    description: '',
+    tags: ['PG'],
+    publishedAt: '2026-11-30',
+    dateLabel: '2026/5/ ~ 2026/11',
+    sortDate: '2026-11-30',
+    recommendedRank: 0,
+  }),
+  createWork({
+    id: 'shape-boss',
+    title: 'SHAPEBOSS',
+    subtitle: '',
+    description: '',
+    tags: ['PG'],
+    publishedAt: '2026-11-30',
+    dateLabel: '2026/8/ ~ 2026/11',
+    sortDate: '2026-11-30',
+    recommendedRank: 0,
+  }),
+  createWork({
+    id: 'my-pace',
+    title: 'MYPACE',
+    subtitle: '',
+    description: '',
+    tags: ['PG'],
+    publishedAt: '2026-10-06',
+    dateLabel: '2026/10/4 ~ 2026/10/6',
+    sortDate: '2026-10-06',
+    recommendedRank: 0,
+  }),
+  createWork({
+    id: 'pg-other',
+    title: 'その他',
+    subtitle: '',
+    description: '',
+    tags: ['PG'],
+    dateLabel: '未定',
+    recommendedRank: 0,
+    coverImage: asset('PG/PG_OTHER/1_1.webp'),
+    sections: [
+      {
+        heading: 'とどけろパケット',
+        media: {
+          images: [
+            asset('PG/PG_OTHER/1_1.webp'),
+            asset('PG/PG_OTHER/1_2.webp'),
+          ],
+        },
+      },
+      {
+        heading: 'Happyサーカス',
+        media: { images: [asset('PG/PG_OTHER/2.webp')] },
+      },
+    ],
+  }),
+  createWork({
+    id: 'minamo-rua-live2d-v3',
+    title: '水面ルア ver3',
+    subtitle: 'オリジナルキャラクター「水面ルア」のLive2Dモデル。',
+    description: 'オリジナルキャラクター「水面ルア」のLive2Dモデル。',
+    tags: ['Live2D', 'イラスト'],
+    publishedAt: '2026-09-21',
+    dateLabel: '2026/9/19 ~ 2026/9/21',
+    sortDate: '2026-09-21',
+    recommendedRank: 60,
+    coverImagePosition: 'center 30%',
+    media: {
+      images: [asset('LIVE2D/minamoruav3.webp')],
+      videos: [
+        {
+          title: '水面ルア ver3',
+          src: asset('LIVE2D/minamoruav3_2.mp4'),
+          type: 'video/mp4',
+          poster: asset('LIVE2D/minamoruav3.webp'),
+        },
+      ],
+    },
+  }),
   createWork({
     id: 'color-connect',
     title: 'カラーコネクト',
@@ -702,6 +786,27 @@ export const works = [
     ],
   }),
   createWork({
+    id: 'rapid-mv',
+    title: 'ラピッド',
+    subtitle: '',
+    description: '',
+    tags: ['Movie'],
+    publishedAt: '2025-08-25',
+    dateLabel: '2025/7/ ~ 2025/8/25',
+    sortDate: '2025-08-25',
+    recommendedRank: 0,
+    coverImage: youtubeThumbnail('dbI59Ik9t2g'),
+    links: [{ label: 'YouTube', href: 'https://youtu.be/dbI59Ik9t2g' }],
+    media: {
+      embeds: [
+        {
+          title: 'ラピッド',
+          src: 'https://www.youtube.com/embed/dbI59Ik9t2g',
+        },
+      ],
+    },
+  }),
+  createWork({
     id: 'illust-ema',
     title: '桜羽エマ',
     subtitle: '合同誌に提出する予定の作品です。仮ページ',
@@ -951,6 +1056,42 @@ export const works = [
     ],
   }),
   createWork({
+    id: 'illust-2026-08-summary',
+    title: '8月イラストまとめ',
+    subtitle: '2026年の8月のイラスト集',
+    description: '2026年の8月のイラスト集',
+    tags: [workTags[1]],
+    publishedAt: '2026-08-31',
+    dateLabel: '2026/8/31',
+    sortDate: '2026-08-31',
+    recommendedRank: 204,
+    coverImagePosition: 'center 40%',
+    media: {
+      images: [
+        asset('ILLUST/ILLUST_2026_8/1.webp'),
+        asset('ILLUST/ILLUST_2026_8/2.webp'),
+      ],
+    },
+  }),
+  createWork({
+    id: 'illust-2026-09-summary',
+    title: '9月イラストまとめ',
+    subtitle: '2026年の9月のイラスト集',
+    description: '2026年の9月のイラスト集',
+    tags: [workTags[1]],
+    publishedAt: '2026-09-30',
+    dateLabel: '2026/9/30',
+    sortDate: '2026-09-30',
+    recommendedRank: 204,
+    coverImagePosition: 'center 20%',
+    media: {
+      images: [
+        asset('ILLUST/ILLUST_2026_9/1.webp'),
+        asset('ILLUST/ILLUST_2026_9/2.webp'),
+      ],
+    },
+  }),
+  createWork({
     id: 'illust-2026-07-summary',
     title: '7月イラストまとめ',
     subtitle: '2026年の7月のイラスト集',
@@ -978,6 +1119,15 @@ export const works = [
   }),
 ]
 
+const recommendedOrderIndex = new Map(recommendedOrder.map((id, index) => [id, index]))
+
+export function compareWorksByRecommendation(workA, workB) {
+  const indexA = recommendedOrderIndex.get(workA.id) ?? recommendedOrder.length
+  const indexB = recommendedOrderIndex.get(workB.id) ?? recommendedOrder.length
+
+  return indexA - indexB || workB.recommendedRank - workA.recommendedRank
+}
+
 export const featuredWorks = [...works]
-  .sort((workA, workB) => workB.recommendedRank - workA.recommendedRank)
+  .sort(compareWorksByRecommendation)
   .slice(0, 3)
