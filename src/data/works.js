@@ -207,7 +207,7 @@ export const works = [
     dateLabel: '2026/9/19 ~ 2026/9/21',
     sortDate: '2026-09-21',
     recommendedRank: 60,
-    coverImagePosition: 'center 30%',
+    coverImagePosition: 'center 10%',
     media: {
       images: [asset('LIVE2D/minamoruav3.webp')],
       videos: [
