@@ -283,7 +283,7 @@
 
 .hero__bubble {
   position: absolute;
-  left: var(--bubble-left);
+  left: calc(100% + var(--bubble-size) * 0.15);
   top: var(--bubble-top);
   width: var(--bubble-size);
   aspect-ratio: 1;
@@ -293,9 +293,15 @@
   background: #eef7f9;
   box-shadow: inset 0 0 0 6px rgba(255, 255, 255, 0.2);
   text-decoration: none;
-  transform: translateX(120vw);
+  transform: translateX(0);
   animation: bubble-flow var(--bubble-duration) linear var(--bubble-delay) infinite;
+  animation-fill-mode: both;
   will-change: transform;
+}
+
+.hero__bubbles.is-paused .hero__bubble,
+.hero__bubbles.is-paused .hero__bubble img {
+  animation-play-state: paused;
 }
 
 .hero__bubble:hover {

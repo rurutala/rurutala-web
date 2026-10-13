@@ -7,10 +7,10 @@ import { compareWorksByRecommendation, featuredWorks, works } from '../data/work
 import { useLikes } from '../hooks/useLikes'
 
 const openingSlots = [
-  { size: 420, top: -5, left: 106, duration: 50, delay: -10, tilt: -16 },
-  { size: 260, top: 68, left: 142, duration: 64, delay: -26, tilt: 14 },
-  { size: 480, top: 12, left: 190, duration: 56, delay: -40, tilt: -12 },
-  { size: 320, top: 68, left: 238, duration: 62, delay: -48, tilt: 18 },
+  { size: 420, top: -5, duration: 50, delay: 0, tilt: -16 },
+  { size: 260, top: 68, duration: 64, delay: 7, tilt: 14 },
+  { size: 480, top: 12, duration: 56, delay: 14, tilt: -12 },
+  { size: 320, top: 68, duration: 62, delay: 21, tilt: 18 },
 ]
 const visualWorks = works.filter(
   (work) =>
@@ -20,7 +20,7 @@ const visualWorks = works.filter(
     work.sections.some((section) => section.media?.images?.length),
 )
 
-export function HomePage({ navigate }) {
+export function HomePage({ navigate, isOpeningVisible = false }) {
   const { getLikeCount } = useLikes()
   const popularWorks = useMemo(
     () => [...visualWorks].sort((workA, workB) =>
@@ -82,7 +82,7 @@ export function HomePage({ navigate }) {
     <>
       <section className="hero" aria-labelledby="hero-title">
         <div className="hero__stage">
-          <div className="hero__bubbles" aria-label="注目作品">
+          <div className={`hero__bubbles${isOpeningVisible ? ' is-paused' : ''}`} aria-label="注目作品">
             {heroBubbles.map((bubble, index) => (
               <AppLink
                 className={`hero__bubble ${changingSlotIds.includes(index) ? 'is-changing' : ''}`}
@@ -98,7 +98,6 @@ export function HomePage({ navigate }) {
                 style={{
                   '--bubble-size': `${bubble.size}px`,
                   '--bubble-top': `${bubble.top}%`,
-                  '--bubble-left': `${bubble.left}%`,
                   '--bubble-duration': `${bubble.duration}s`,
                   '--bubble-delay': `${bubble.delay}s`,
                   '--bubble-tilt': `${bubble.tilt}deg`,

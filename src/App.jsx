@@ -53,7 +53,7 @@ function App() {
             setIsMenuOpen={setIsMenuOpen}
           />
 
-          {route.name === 'home' && <HomePage navigate={navigate} />}
+          {route.name === 'home' && <HomePage isOpeningVisible={isOpeningVisible} navigate={navigate} />}
           {route.name === 'works' && <WorksPage navigate={navigate} />}
           {import.meta.env.DEV && route.name === 'recommendedEditor' && (
             <Suspense fallback={<p role="status">Now Loading...</p>}>
