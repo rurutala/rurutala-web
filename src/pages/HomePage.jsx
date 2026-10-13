@@ -7,11 +7,12 @@ import { compareWorksByRecommendation, featuredWorks, works } from '../data/work
 import { useLikes } from '../hooks/useLikes'
 
 const openingSlots = [
-  { size: 420, top: -5, duration: 50, delay: 0, tilt: -16 },
-  { size: 260, top: 68, duration: 64, delay: 7, tilt: 14 },
-  { size: 480, top: 12, duration: 56, delay: 14, tilt: -12 },
-  { size: 320, top: 68, duration: 62, delay: 21, tilt: 18 },
+  { size: 320, top: 25, duration: 24, delay: 0, tilt: -16 },
+  { size: 220, top: 85, duration: 24, delay: 6, tilt: 14 },
+  { size: 340, top: 25, duration: 24, delay: 12, tilt: -12 },
+  { size: 240, top: 85, duration: 24, delay: 18, tilt: 18 },
 ]
+const openingMaxSize = Math.max(...openingSlots.map((slot) => slot.size))
 const visualWorks = works.filter(
   (work) =>
     work.media.images?.length ||
@@ -82,7 +83,11 @@ export function HomePage({ navigate, isOpeningVisible = false }) {
     <>
       <section className="hero" aria-labelledby="hero-title">
         <div className="hero__stage">
-          <div className={`hero__bubbles${isOpeningVisible ? ' is-paused' : ''}`} aria-label="注目作品">
+          <div
+            className={`hero__bubbles${isOpeningVisible ? ' is-paused' : ''}`}
+            aria-label="注目作品"
+            style={{ '--bubble-max-size': `${openingMaxSize}px` }}
+          >
             {heroBubbles.map((bubble, index) => (
               <AppLink
                 className={`hero__bubble ${changingSlotIds.includes(index) ? 'is-changing' : ''}`}
