@@ -1952,6 +1952,13 @@
   box-shadow: inset 0 0 0 5px rgba(125, 217, 236, 0.06);
 }
 
+@media (min-width: 761px) {
+  .hero__bubble {
+    animation-duration: calc(var(--bubble-duration) * 0.8);
+    animation-delay: calc(var(--bubble-delay) * 0.8);
+  }
+}
+
 @media (max-width: 760px) {
   .opening__message {
     font-size: clamp(1.9rem, 8.8vw, 3.8rem);
