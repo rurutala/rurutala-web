@@ -7,10 +7,10 @@ import { compareWorksByRecommendation, featuredWorks, works } from '../data/work
 import { useLikes } from '../hooks/useLikes'
 
 const openingSlots = [
-  { size: 320, top: 25, duration: 24, delay: 0, tilt: -16 },
-  { size: 220, top: 85, duration: 24, delay: 6, tilt: 14 },
-  { size: 340, top: 25, duration: 24, delay: 12, tilt: -12 },
-  { size: 240, top: 85, duration: 24, delay: 18, tilt: 18 },
+  { size: 480, top: 30, duration: 24, delay: 0, tilt: -16 },
+  { size: 200, top: 66, duration: 24, delay: 6, tilt: 14 },
+  { size: 360, top: 44, duration: 24, delay: 12, tilt: -12 },
+  { size: 270, top: 82, duration: 24, delay: 18, tilt: 18 },
 ]
 const openingMaxSize = Math.max(...openingSlots.map((slot) => slot.size))
 const visualWorks = works.filter(
