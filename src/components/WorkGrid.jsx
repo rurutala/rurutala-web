@@ -4,7 +4,7 @@ import { formatWorkDate } from '../utils/date'
 
 export function WorkGrid({ works: gridWorks, navigate }) {
   return (
-    <div className="work-grid work-grid--works">
+    <div className={`work-grid work-grid--works${gridWorks.length === 1 ? ' work-grid--single' : ''}`}>
       {gridWorks.map((work) => (
         <article className="work-card" key={work.id}>
           <AppLink className="work-card__media" href={`/works/${work.id}`} navigate={navigate}>
