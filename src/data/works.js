@@ -6,97 +6,6 @@ const youtubeThumbnail = (videoId) => `https://img.youtube.com/vi/${videoId}/hqd
 
 export const workTags = ['PG', 'イラスト', 'DTM', 'Movie', 'Live2D', '3DCG']
 
-const templates = {
-  pg: [
-    {
-      heading: '概要',
-      body: '作品の目的、制作時期、制作体制を記載します。',
-    },
-    {
-      heading: '担当範囲',
-      body: '実装した機能、画面、進行管理などの担当箇所を記載します。',
-    },
-    {
-      heading: '使用技術',
-      body: '使用した言語、エンジン、ライブラリ、開発ツールを記載します。',
-    },
-    {
-      heading: 'メモ',
-      body: '制作中に意識した点、課題、今後追記したい内容を記載します。',
-    },
-  ],
-  illustration: [
-    {
-      heading: '概要',
-      body: '作品のテーマ、制作時期、用途を記載します。',
-    },
-    {
-      heading: '制作情報',
-      body: '使用ツール、作業工程、差分や関連素材について記載します。',
-    },
-    {
-      heading: 'メモ',
-      body: '構図、色、描き込みなど後から補足したい内容を記載します。',
-    },
-  ],
-  music: [
-    {
-      heading: '概要',
-      body: '曲のテーマ、制作企画、公開先を記載します。',
-    },
-    {
-      heading: '使用ツール',
-      body: 'DAW、音源、ボーカル、ミキシングなどの制作環境を記載します。',
-    },
-    {
-      heading: 'メモ',
-      body: '曲調、構成、反省点など後から補足したい内容を記載します。',
-    },
-  ],
-  movie: [
-    {
-      heading: '概要',
-      body: '動画の目的、公開先、制作した素材を記載します。',
-    },
-    {
-      heading: '担当範囲',
-      body: 'イラスト、編集、撮影、モーションなど担当した工程を記載します。',
-    },
-    {
-      heading: 'メモ',
-      body: '演出や編集面で後から補足したい内容を記載します。',
-    },
-  ],
-  live2d: [
-    {
-      heading: '概要',
-      body: 'モデルの用途、制作時期、前バージョンとの差分を記載します。',
-    },
-    {
-      heading: '表情・動作',
-      body: '表情差分、パーツ分け、モーションや調整内容を記載します。',
-    },
-    {
-      heading: 'メモ',
-      body: '制作工程や改善点など後から補足したい内容を記載します。',
-    },
-  ],
-  cg: [
-    {
-      heading: '概要',
-      body: '3DCGモデルの用途、制作時期、使用ツールを記載します。',
-    },
-    {
-      heading: '制作内容',
-      body: 'モデリング、ボーン、シェイプキー、ウェイト調整などを記載します。',
-    },
-    {
-      heading: 'メモ',
-      body: '調整した点、課題、今後追記したい内容を記載します。',
-    },
-  ],
-}
-
 function createWork({
   id,
   title,
@@ -807,39 +716,6 @@ export const works = [
     },
   }),
   createWork({
-    id: 'illust-ema',
-    title: '桜羽エマ',
-    subtitle: '合同誌に提出する予定の作品です。仮ページ',
-    description: '続報は合同誌をお待ちください',
-    tags: ['イラスト'],
-    publishedAt: '2026-5-2',
-    dateLabel: '未定',
-    sortDate: '2025-12-31',
-    recommendedRank: 100,
-    coverImagePosition: 'center 10%',
-    media: { images: [asset('ILLUST/ILLUST_EMA/ema.webp')] },
-    sections: templates.illustration,
-  }),
-  createWork({
-    id: 'illust-leur',
-    title: 'ルウル',
-    subtitle: '次世代バーチャルシンガー「ルウル」の二次創作',
-    description: '次世代バーチャルシンガー「ルウル」の二次創作イラスト。',
-    tags: ['イラスト'],
-    publishedAt: '2025-11-12',
-    dateLabel: '2025/11/12',
-    sortDate: '2025-11-12',
-    recommendedRank: 120,
-    coverImagePosition: 'center 40%',
-    media: { images: [asset('ILLUST/ILLUST_LEUR/leur.webp')] },
-    sections: [
-      {
-        heading: 'メモ',
-        body: '資料をたくさん見てたくさん吟味するようになってルルネ同様に絵の全体的な完成度が上がりました！',
-      },
-    ],
-  }),
-  createWork({
     id: 'illust-rua-1',
     title: '水面ルア 1',
     subtitle: 'デジクリ合同誌に提出した作品',
@@ -878,21 +754,30 @@ export const works = [
     ],
   }),
   createWork({
-    id: 'illust-rurune',
-    title: 'ルルネ',
-    subtitle: 'Paryi先生のオリジナルキャラクター「ルルネ」の二次創作',
-    description: 'Paryi先生のオリジナルキャラクター「ルルネ」の二次創作イラスト。',
+    id: 'illust-2025-11-summary',
+    title: '11月イラストまとめ',
+    subtitle: '2025年の11月のイラスト集',
+    description: '2025年の11月のイラスト集',
     tags: ['イラスト'],
-    publishedAt: '2025-11-10',
-    dateLabel: '2025/11/10',
-    sortDate: '2025-11-10',
+    publishedAt: '2025-11-30',
+    dateLabel: '2025/11/30',
+    sortDate: '2025-11-30',
     recommendedRank: 210,
     coverImagePosition: 'center 40%',
-    media: { images: [asset('ILLUST/ILLUST_RURUNE/rurune.webp')] },
+    media: {
+      images: [
+        asset('ILLUST/ILLUST_RURUNE/rurune.webp'),
+        asset('ILLUST/ILLUST_LEUR/leur.webp'),
+      ],
+    },
     sections: [
       {
-        heading: 'メモ',
+        heading: 'ルルネ',
         body: 'VRChatでのシチュエーションを創造し、具体的な背景などを取り入れました。資料を今まで以上に集めて参考にし意識して絵を描くようになり、この時期から個人的に大きく成長したと感じる作品です。\n\nルルネちゃんが可愛いのも要因ですね。',
+      },
+      {
+        heading: 'ルウル',
+        body: '資料をたくさん見てたくさん吟味するようになってルルネ同様に絵の全体的な完成度が上がりました！',
       },
     ],
   }),
@@ -935,44 +820,6 @@ export const works = [
     ],
   }),
   createWork({
-    id: 'illust-tyoko',
-    title: 'ちょこ',
-    subtitle: 'ラストピリオド10周年記念の二次創作イラスト。',
-    description: 'ラストピリオド10周年記念の二次創作イラスト。',
-    tags: [workTags[1]],
-    publishedAt: '2026-05-12',
-    dateLabel: '2026/5/12',
-    sortDate: '2026-05-12',
-    recommendedRank: 55,
-    coverImagePosition: 'center 40%',
-    media: { images: [asset('ILLUST/ILLUST_TYOKO/tyoko.webp')] },
-    sections: [
-      {
-        heading: 'メモ',
-        body: 'ラスピリ10周年おめでとう！！\nお顔が可愛く描けて満足',
-      },
-    ],
-  }),
-  createWork({
-    id: 'illust-natsu-bando',
-    title: 'ナツ(バンド)',
-    subtitle: 'ブルーアーカイブ放課後スイーツ部 ナツ(バンド)の二次創作イラスト。',
-    description: 'ブルーアーカイブ放課後スイーツ部 ナツ(バンド)の二次創作イラスト。',
-    tags: [workTags[1]],
-    publishedAt: '2026-05-15',
-    dateLabel: '2026/5/15',
-    sortDate: '2026-05-15',
-    recommendedRank: 189,
-    coverImagePosition: 'center 10%',
-    media: { images: [asset('ILLUST/ILLUST_NATSU(BANDO)/natsu-bando.webp')] },
-    sections: [
-      {
-        heading: 'メモ',
-        body: 'ルルネ辺りからの絵柄がまとまってきていると感じます。5時間半で完成した作品でもあり自身でも驚いてます。\n\nカラーラフを書き込んでイメージをつけてから線画に進むと完成度も上がることが分かり自分には合っていそうとより感じます。',
-      },
-    ],
-  }),
-  createWork({
     id: 'suisaiga-fishing-minigame',
     title: '水彩画は水底に沈む',
     subtitle: '釣りミニゲーム周りを担当しました。',
@@ -1005,10 +852,10 @@ export const works = [
     ],
   }),
   createWork({
-    id: 'illust-uzawa-reisa',
-    title: '宇沢レイサ',
-    subtitle: '宇沢レイサの誕生日二次創作イラスト',
-    description: '宇沢レイサの誕生日二次創作イラスト',
+    id: 'illust-2026-05-summary',
+    title: '5月イラストまとめ',
+    subtitle: '2026年の5月のイラスト集',
+    description: '2026年の5月のイラスト集',
     tags: [workTags[1]],
     publishedAt: '2026-05-31',
     dateLabel: '2026/5/31',
@@ -1019,12 +866,22 @@ export const works = [
       images: [
         asset('ILLUST/ILLUST_UZAWA/uzawa1.webp'),
         asset('ILLUST/ILLUST_UZAWA/uzawa2.webp'),
+        asset('ILLUST/ILLUST_NATSU(BANDO)/natsu-bando.webp'),
+        asset('ILLUST/ILLUST_TYOKO/tyoko.webp'),
       ],
     },
     sections: [
       {
-        heading: 'メモ',
+        heading: '宇沢レイサ',
         body: '初めて2,000いいねもらえてちょううれしかった！',
+      },
+      {
+        heading: 'ナツ(バンド)',
+        body: 'ルルネ辺りからの絵柄がまとまってきていると感じます。5時間半で完成した作品でもあり自身でも驚いてます。\n\nカラーラフを書き込んでイメージをつけてから線画に進むと完成度も上がることが分かり自分には合っていそうとより感じます。',
+      },
+      {
+        heading: 'ちょこ',
+        body: 'ラスピリ10周年おめでとう！！\nお顔が可愛く描けて満足',
       },
     ],
   }),
@@ -1108,6 +965,7 @@ export const works = [
         asset('ILLUST/ILLUST_2026_7/2.webp'),
         asset('ILLUST/ILLUST_2026_7/3.webp'),
         asset('ILLUST/ILLUST_2026_7/4.webp'),
+        asset('ILLUST/ILLUST_EMA/ema.webp'),
       ],
     },
     sections: [

@@ -1,41 +1,39 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { AppLink } from '../components/AppLink'
 import { ArticleGrid } from '../components/ArticleGrid'
 import { WorkGrid } from '../components/WorkGrid'
 import { featuredArticles } from '../data/articles'
 import { compareWorksByRecommendation, featuredWorks, works } from '../data/works'
+import { useLikes } from '../hooks/useLikes'
 
-const recommendedWorks = [...works].sort(compareWorksByRecommendation)
-const pinnedOpeningWorkIds = ['illust-rurune', 'illust-the-hole', 'color-connect']
-const pinnedOpeningSlots = [7, 2, 5]
-const dynamicOpeningWorks = recommendedWorks.filter((work) => !pinnedOpeningWorkIds.includes(work.id))
-
-function createOpeningWorks() {
-  const openingWorks = []
-  let dynamicIndex = 0
-
-  pinnedOpeningSlots.forEach((slotIndex, pinnedIndex) => {
-    openingWorks[slotIndex] = works.find((work) => work.id === pinnedOpeningWorkIds[pinnedIndex])
-  })
-
-  for (let slotIndex = 0; slotIndex < 8; slotIndex += 1) {
-    if (openingWorks[slotIndex]) {
-      continue
-    }
-
-    openingWorks[slotIndex] = dynamicOpeningWorks[dynamicIndex % dynamicOpeningWorks.length]
-    dynamicIndex += 1
-  }
-
-  return openingWorks
-}
+const openingSlots = [
+  { size: 420, top: -5, left: 106, duration: 50, delay: -10, tilt: -16 },
+  { size: 260, top: 68, left: 142, duration: 64, delay: -26, tilt: 14 },
+  { size: 480, top: 12, left: 190, duration: 56, delay: -40, tilt: -12 },
+  { size: 320, top: 68, left: 238, duration: 62, delay: -48, tilt: 18 },
+]
+const visualWorks = works.filter(
+  (work) =>
+    work.media.images?.length ||
+    work.media.embeds?.length ||
+    work.media.videos?.some((video) => video.poster) ||
+    work.sections.some((section) => section.media?.images?.length),
+)
 
 export function HomePage({ navigate }) {
-  const [openingWorks, setOpeningWorks] = useState(() => createOpeningWorks())
+  const { getLikeCount } = useLikes()
+  const popularWorks = useMemo(
+    () => [...visualWorks].sort((workA, workB) =>
+      getLikeCount(`work:${workB.id}`) - getLikeCount(`work:${workA.id}`) ||
+      compareWorksByRecommendation(workA, workB),
+    ),
+    [getLikeCount],
+  )
+  const [openingWorkIndices, setOpeningWorkIndices] = useState(() => openingSlots.map((_, index) => index))
   const [changingSlotIds, setChangingSlotIds] = useState([])
   const changingSlots = useRef(new Set())
   const transitionTimers = useRef([])
-  const nextOpeningWorkIndex = useRef(8 - pinnedOpeningSlots.length)
+  const nextOpeningWorkIndex = useRef(openingSlots.length)
 
   useEffect(() => {
     const timers = transitionTimers.current
@@ -46,7 +44,7 @@ export function HomePage({ navigate }) {
   }, [])
 
   const replaceOpeningWork = (slotIndex) => {
-    if (pinnedOpeningSlots.includes(slotIndex) || changingSlots.current.has(slotIndex)) {
+    if (!popularWorks.length || changingSlots.current.has(slotIndex)) {
       return
     }
 
@@ -54,16 +52,15 @@ export function HomePage({ navigate }) {
     setChangingSlotIds((currentIds) => [...currentIds, slotIndex])
 
     const swapTimer = window.setTimeout(() => {
-      setOpeningWorks((currentWorks) =>
-        currentWorks.map((work, index) => {
+      const nextWorkIndex = nextOpeningWorkIndex.current % popularWorks.length
+      nextOpeningWorkIndex.current += 1
+      setOpeningWorkIndices((currentIndices) =>
+        currentIndices.map((workIndex, index) => {
           if (index !== slotIndex) {
-            return work
+            return workIndex
           }
 
-          const nextWork = dynamicOpeningWorks[nextOpeningWorkIndex.current % dynamicOpeningWorks.length]
-          nextOpeningWorkIndex.current += 1
-
-          return nextWork || work
+          return nextWorkIndex
         }),
       )
     }, 220)
@@ -76,16 +73,10 @@ export function HomePage({ navigate }) {
     transitionTimers.current.push(swapTimer, revealTimer)
   }
 
-  const heroBubbles = openingWorks.map((work, index) => ({
-    work,
-    size: [420, 260, 560, 320, 210, 500, 280, 720][index],
-    top: [-15, 75, -5, 65, -7, 60, 40, -17][index],
-    left: [104, 126, 150, 176, 204, 234, 266, 330][index],
-    duration: [50, 68, 46, 62, 42, 40, 54, 65][index],
-    delay: [-2, -9, -16, -23, -5, -30, -12, -32.5][index],
-    exit: ['-220vw', '-220vw', '-220vw', '-220vw', '-220vw', '-220vw', '-220vw', '-430vw'][index],
-    tilt: [-16, 14, -12, 18, -14, 12, -18, 16][index],
-  }))
+  const heroBubbles = openingSlots.map((slot, index) => ({
+    ...slot,
+    work: popularWorks[openingWorkIndices[index] % popularWorks.length],
+  })).filter((bubble) => bubble.work)
 
   return (
     <>
@@ -96,16 +87,20 @@ export function HomePage({ navigate }) {
               <AppLink
                 className={`hero__bubble ${changingSlotIds.includes(index) ? 'is-changing' : ''}`}
                 href={`/works/${bubble.work.id}`}
+                aria-label={bubble.work.title}
                 key={`opening-${index}`}
                 navigate={navigate}
-                onAnimationIteration={() => replaceOpeningWork(index)}
+                onAnimationIteration={(event) => {
+                  if (event.target === event.currentTarget && event.animationName === 'bubble-flow') {
+                    replaceOpeningWork(index)
+                  }
+                }}
                 style={{
                   '--bubble-size': `${bubble.size}px`,
                   '--bubble-top': `${bubble.top}%`,
                   '--bubble-left': `${bubble.left}%`,
                   '--bubble-duration': `${bubble.duration}s`,
                   '--bubble-delay': `${bubble.delay}s`,
-                  '--bubble-exit': bubble.exit,
                   '--bubble-tilt': `${bubble.tilt}deg`,
                 }}
               >

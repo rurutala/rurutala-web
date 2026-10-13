@@ -1,5 +1,14 @@
 import { useEffect, useState } from 'react'
 
+const workAliases = {
+  'illust-uzawa-reisa': 'illust-2026-05-summary',
+  'illust-natsu-bando': 'illust-2026-05-summary',
+  'illust-tyoko': 'illust-2026-05-summary',
+  'illust-ema': 'illust-2026-07-summary',
+  'illust-rurune': 'illust-2025-11-summary',
+  'illust-leur': 'illust-2025-11-summary',
+}
+
 function getRoute(pathname) {
   if (import.meta.env.DEV && pathname === '/manage/recommended') {
     return { name: 'recommendedEditor' }
@@ -10,7 +19,9 @@ function getRoute(pathname) {
   }
 
   if (pathname.startsWith('/works/')) {
-    return { name: 'workDetail', id: decodeURIComponent(pathname.replace('/works/', '')) }
+    const id = decodeURIComponent(pathname.replace('/works/', ''))
+
+    return { name: 'workDetail', id: workAliases[id] || id }
   }
 
   if (pathname === '/articles') {
