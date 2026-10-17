@@ -1,34 +1,43 @@
-# iPhone Sword Controller
+# /sword/: 軽量なiPhone剣コントローラー
 
-`/sword/` は Unity の QR コードから開く iPhone Safari 用の操作ページです。`/sword` でも同じページを表示します。センサーの中継には Cloudflare Workers を使用します。
+UnityのQRコードからiPhone Safariで開く操作ページです。最初の接続情報だけをVercelで交換し、プレイ中のセンサー値はPCとiPhoneのWebRTC DataChannelで直接送ります。Cloudflare・追加DB・STUN/TURNは使いません。同じ家庭内LANが必要です。
 
-## 接続先
+## Vercelで使うもの
 
-現在の中継: `https://battle-sword-controller.dent-split.workers.dev`
+- 静的な `public/sword/`（ReactアプリやFirebaseは読み込みません）。
+- `api/sword.js` と `lib/sword-signaling.mjs`（データのみのWebRTC接続情報交換）。
+- Vercel標準Runtime Cache（120秒で失効、接続完了後は削除）。
+- `@vercel/functions` と `qrcode`。
 
-操作ページの `sword-relay` メタ要素と、`vercel.json` の `/sword/:path*` に指定した `Content-Security-Policy` は、同じ中継を指定してください。QR のパラメーターから任意の接続先を指定することはできません。
+APIの実行リージョンは `vercel.json` で `iad1` に固定します。キャッシュはリージョンごとに分かれているため、複数へ分散させないでください。キャッシュが期限前に消えた場合も、Unityで新しいQRを作成すればやり直せます。接続完了後はキャッシュに依存しません。
 
-この中継は一時公開として作成したものです。2026-10-17 17:03:11 JST までに所有者による無料アカウントへの取得が完了しない場合、削除されます。恒久運用前に取得を完了するか、恒久 URL へ変更してください。所有権取得用リンクはこのリポジトリには含めていません。
+環境変数や追加サービスの契約は不要です。Vercel Hobbyの無料枠を使い、上限超過時は利用制限になります。Proへの変更や有料中継へ切り替える処理はありません。既存サイトも同じ無料枠を使います。
 
-## 公開後の接続
+## 配信設定
 
-1. `/sword/` と `/sword/app.mjs` が公開されたことを確認します。
-2. Unity プロジェクト側の中継に `CONTROLLER_PAGE_URL=https://www.rurutala.net/sword/` を指定して公開します。
-3. Unity で新しい QR を作成します。`Relay Url` は中継 URL のままです。
-4. iPhone のカメラから QR を開き、Safari で「センサーを許可して開始」を押します。
-5. iPhone の画面を上にして物理的な上端を PC へ向け、キャリブレーションします。
+- `/sword` と `/sword/` は `public/sword/index.html`。
+- `/api/sword` はSPAの `index.html` へ書き換えず、Functionへ到達させます。
+- HTMLとAPIは `no-store`、`Referrer-Policy: no-referrer`。
+- 操作ページは同じオリジンのAPIへだけHTTP接続します。
 
-QR には `#room=...&token=...` が必要です。URL を直接開いただけではゲームに接続しません。QR のトークンを外部へ共有しないでください。
+QRの `#room=...&token=...` にはスマホ用のトークンだけが入ります。PC用は別のトークンです。APIへはAuthorizationヘッダーで渡します。SDPやトークン、センサー値をログへ出力しません。
 
-Safari の WebSocket 接続元は本番ドメインと照合します。Vercel のプレビュー URL から本番用ルームへ接続することはできません。センサーの許可は本番ドメインの HTTPS ページで確認します。
+## 公開と利用
 
-## 更新
+1. `npm ci`、`npm run build`、`npm run lint` を確認します。
+2. 本番へ反映後、`/sword/` と各JavaScript、および `/api/sword` が配信されることを確認します。
+3. Unityプロジェクトの接続先を `https://www.rurutala.net` に設定し、Playで新しいQRを作ります。
+4. PCとiPhoneを同じLANに接続し、QRをSafariで開いてセンサーを許可します。
+5. 物理的な上端をPCへ向けてキャリブレーションします。
 
-操作ページの元ソースは Unity プロジェクトの `Tools/SwordControllerServer/public/` です。更新時は `Tools/SwordControllerCloud/export-site.mjs` に、このリポジトリの作業ディレクトリと HTTPS 中継 URL を渡して再生成します。Vercel の Functions や追加依存パッケージは使用しません。
+QRは2分以内に開きます。PCの返答確認は2秒間隔、最大60回で停止します。作成・スマホの取得/返答・PCの確認・削除を合計して最大64API呼び出しです。**初期接続後のプレイ時間に比例するAPI呼び出しはありません。**
 
-## 検証
+センサーの本文は52バイト/回、60Hzで約3.1KB/秒です。音声・映像は扱いません。スマホを背面へ回すなどでセンサーが停止した場合、Unityは斬撃とガードを無効にします。切断時は新しいQRで接続し直します。
 
-- `npm run build` と `npm run lint`: 成功。
-- 別オリジンの操作ページから中継への接続、ルームとトークンの検証、別サイトの拒否: 自動テスト成功。
-- 実際の C# 受信コードによる斬撃8方向・ガード8方向: 合成センサー値で成功。
-- iPhone 実機のセンサーと Safari の許可操作、本番ドメインでの接続: 公開後に確認が必要。
+## 更新と検証
+
+生成元はUnityプロジェクトの `Tools/SwordControllerDirect/` です。そのディレクトリで `node export-site.mjs <このリポジトリの作業パス>` を実行して更新します。
+
+接続APIの認証・期限・消失・QR・バイナリーの6テスト、既存の方向判定26テスト、Unityの実WebRTCを使うPlayModeテストで斬撃8方向・ガード8方向・プレイ中のAPI呼び出し増加なしを確認しています。
+
+iPhone Safariの許可操作・実センサー・家庭内ネットワーク、本番VercelのRuntime Cacheを含めた接続は、公開後の実機確認が必要です。Unity 6000.6では公式WebRTC 3.0.0に非推奨表示が出ますが、Windows x64の実通信テストは成功しています。
