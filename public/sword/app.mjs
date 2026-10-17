@@ -9,30 +9,16 @@ let orientation;
 let orientationAt = -Infinity;
 let motionAt = -Infinity;
 let sentAt = -Infinity;
-let debugAt = -Infinity;
 let sequence = 0;
-let sent = 0;
-let dropped = 0;
 let wakeLock;
 
 function updateButtons() {
     byId("calibrate").disabled = !enabled || !peer.ready || performance.now() - motionAt > 300;
 }
 
-const peer = new PhonePeer(state => {
-    byId("connection").textContent = state === "connected" ? "PCと直接接続済み（センサー中継なし）" :
-        state === "waiting" ? "PCへの直接接続を待っています。同じWi-Fiに接続してください。" :
-        "切断しました。Unityで新しいQRを作成して、もう一度読み取ってください。";
-    if (state === "connected") {
-        byId("error").textContent = "";
-        byId("feedback").textContent = "センサー開始後にキャリブレーションしてください。";
-    }
-    updateButtons();
-}, value => {
+const peer = new PhonePeer(updateButtons, value => {
     if (value.Type === "ping") {
         peer.sendControl({ Type: "pong", Id: value.Id });
-    } else if (value.Type === "feedback" && typeof value.Status === "string") {
-        byId("feedback").textContent = value.Status;
     }
 });
 
@@ -43,7 +29,6 @@ async function keepAwake() {
 }
 
 byId("enable").addEventListener("click", async () => {
-    byId("error").textContent = "";
     try {
         if (!window.isSecureContext || !window.DeviceMotionEvent || !window.DeviceOrientationEvent) {
             throw new Error("UnityのQRコードから、iPhoneのSafariでHTTPSページを開いてください。");
@@ -57,10 +42,12 @@ byId("enable").addEventListener("click", async () => {
         enabled = true;
         byId("enable").disabled = true;
         byId("enable").textContent = "センサー開始済み";
+        byId("enable").removeAttribute("aria-description");
         await keepAwake();
         updateButtons();
     } catch (error) {
-        byId("error").textContent = error.message;
+        byId("enable").textContent = "センサーを許可して再試行";
+        byId("enable").setAttribute("aria-description", error.message);
     }
 });
 
@@ -75,7 +62,6 @@ window.addEventListener("devicemotion", event => {
     if (!enabled || document.hidden) { return; }
     const now = performance.now();
     if (!orientation || now - orientationAt > 120 || !vectorAvailable(event.acceleration) || !rotationAvailable(event.rotationRate)) {
-        byId("error").textContent = "姿勢・加速度・ジャイロが揃っていません。Safariの許可と前面表示を確認してください。";
         return;
     }
     motionAt = now;
@@ -84,22 +70,13 @@ window.addEventListener("devicemotion", event => {
         Ax: event.acceleration.x, Ay: event.acceleration.y, Az: event.acceleration.z,
         Gx: event.rotationRate.beta, Gy: event.rotationRate.gamma, Gz: event.rotationRate.alpha,
         OrientationAge: (now - orientationAt) / 1000 };
-    if (peer.sendSample(encode(sample))) { sent++; } else { dropped++; }
+    peer.sendSample(encode(sample));
     sentAt = now;
-    if (now - debugAt >= 250) {
-        debugAt = now;
-        byId("error").textContent = "";
-        byId("debug").textContent = `直接送信: ${sent} / 破棄: ${dropped} / 52バイト/回\n` +
-            `加速度: ${sample.Ax.toFixed(2)}, ${sample.Ay.toFixed(2)}, ${sample.Az.toFixed(2)} m/s²\n` +
-            `角速度: ${sample.Gx.toFixed(1)}, ${sample.Gy.toFixed(1)}, ${sample.Gz.toFixed(1)} deg/s`;
-        updateButtons();
-    }
 });
 
 byId("calibrate").addEventListener("click", () => {
     if (peer.ready) {
         peer.sendControl({ Type: "calibrate" });
-        byId("feedback").textContent = "上端をPCへ向けて静止してください。";
     }
 });
 document.addEventListener("visibilitychange", () => {
@@ -112,5 +89,5 @@ window.addEventListener("pagehide", () => peer.close());
 setInterval(updateButtons, 500);
 peer.connect().catch(error => {
     peer.close();
-    byId("error").textContent = error.message;
+    byId("calibrate").setAttribute("aria-description", error.message);
 });
