@@ -11,14 +11,27 @@ let motionAt = -Infinity;
 let sentAt = -Infinity;
 let sequence = 0;
 let wakeLock;
+let calibrationId;
+
+function finishCalibration() {
+    calibrationId = undefined;
+    byId("calibrate").textContent = "キャリブレーション";
+    byId("calibrate").removeAttribute("aria-busy");
+}
 
 function updateButtons() {
-    byId("calibrate").disabled = !enabled || !peer.ready || performance.now() - motionAt > 300;
+    const unavailable = !enabled || !peer.ready || performance.now() - motionAt > 300;
+    if (calibrationId && unavailable) { finishCalibration(); }
+    byId("calibrate").disabled = unavailable || Boolean(calibrationId);
 }
 
 const peer = new PhonePeer(updateButtons, value => {
     if (value.Type === "ping") {
         peer.sendControl({ Type: "pong", Id: value.Id });
+    } else if (value.Type === "feedback" && calibrationId &&
+        value.Id === calibrationId && value.Calibrated === true) {
+        finishCalibration();
+        updateButtons();
     }
 });
 
@@ -75,8 +88,12 @@ window.addEventListener("devicemotion", event => {
 });
 
 byId("calibrate").addEventListener("click", () => {
-    if (peer.ready) {
-        peer.sendControl({ Type: "calibrate" });
+    if (peer.ready && !byId("calibrate").disabled) {
+        calibrationId = crypto.randomUUID();
+        byId("calibrate").textContent = "PCへ上端を向けてキャリブレーション";
+        byId("calibrate").setAttribute("aria-busy", "true");
+        peer.sendControl({ Type: "calibrate", Id: calibrationId });
+        updateButtons();
     }
 });
 document.addEventListener("visibilitychange", () => {
