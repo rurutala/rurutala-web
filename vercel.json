@@ -1,8 +1,43 @@
 {
   "rewrites": [
     {
+      "source": "/sword",
+      "destination": "/sword/index.html"
+    },
+    {
+      "source": "/sword/",
+      "destination": "/sword/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/sword/:path*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "accelerometer=(self), gyroscope=(self), magnetometer=(self)"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self'; style-src 'unsafe-inline'; connect-src wss://battle-sword-controller.dent-split.workers.dev; base-uri 'none'; frame-ancestors 'none'; form-action 'none'"
+        }
+      ]
     }
   ]
 }
