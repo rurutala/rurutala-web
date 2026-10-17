@@ -2,6 +2,8 @@
 
 UnityのQRコードからiPhone Safariで開く操作ページです。最初の接続情報だけをVercelで交換し、プレイ中のセンサー値はPCとiPhoneのWebRTC DataChannelで直接送ります。Cloudflare・追加DB・STUN/TURNは使いません。同じ家庭内LANが必要です。
 
+スマホ画面は白背景に、既存サイトの紺色 `#1e2f4a` の2つのボタンとキャリブレーション画像だけを表示します。接続ログ・センサー数値・説明文は表示しません。画像は画面を上にしてiPhoneの上端をPCへ向ける持ち方を示し、WebP形式で約12KBです。
+
 ## Vercelで使うもの
 
 - 静的な `public/sword/`（ReactアプリやFirebaseは読み込みません）。
