@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Sword | rurutala</title>
+    <style>
+        :root { color-scheme: light; background: #fff; color: #1e2f4a; font-family: system-ui, -apple-system, sans-serif; }
+        * { box-sizing: border-box; }
+        body { margin: 0; min-width: 280px; min-height: 100svh; display: grid; place-items: center; background: #fff; }
+        main { width: 100%; max-width: 440px; padding: max(28px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(28px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left)); display: grid; gap: 24px; }
+        button { position: relative; width: 100%; min-height: 64px; padding: 18px 36px; border: 1px solid #0e1b2e; border-radius: 10px; background: #1e2f4a; color: #fff; box-shadow: 0 4px 0 #0e1b2e; font: inherit; font-size: 16px; font-weight: 600; line-height: 1.6; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+        button:not(:disabled)::after { content: ""; position: absolute; right: 20px; top: calc(50% - 4px); width: 8px; height: 8px; border-top: 2px solid currentColor; border-right: 2px solid currentColor; transform: rotate(45deg); }
+        button:disabled { opacity: 1; cursor: default; color: #d9dee7; box-shadow: none; transform: translateY(4px); }
+        #calibrate { min-height: 88px; }
+        button:focus-visible { outline: 2px solid #1e2f4a; outline-offset: 4px; }
+        button:active:not(:disabled) { background: #2a4166; box-shadow: 0 1px 0 #0e1b2e; transform: translateY(3px); }
+        img { display: block; width: 100%; height: auto; }
+    </style>
+</head>
+<body>
+    <main>
+        <button id="enable" type="button">センサーを許可して開始</button>
+        <img src="/sword/calibration.webp" width="900" height="600" alt="iPhoneの画面を上にして持ち、物理的な上端をPC画面へ向けます。キャリブレーションを押したら0.6秒間静止します。">
+        <button id="calibrate" type="button" aria-live="polite" disabled>キャリブレーション</button>
+    </main>
+    <script type="module" src="/sword/app.mjs"></script>
+</body>
+</html>

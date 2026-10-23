@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
+import { readFile } from 'node:fs/promises'
 import { applySeoToHtml, renderSeoHead } from '../plugins/seo-html.mjs'
 import { buildStructuredData, getSeoData, getSeoMeta, getSeoPages } from '../src/utils/seo.js'
 
@@ -83,4 +84,18 @@ test('initial HTML includes escaped OGP and JSON-LD without JavaScript execution
   assert(result.includes('<script src="/app.js"></script>'))
   assert.equal(applySeoToHtml(result, page), result)
   assert.throws(() => applySeoToHtml('<head></head>', page), /markers/)
+})
+
+test('deployment routes serve page HTML while preserving sword and API routing', async () => {
+  const config = JSON.parse(await readFile(new URL('../vercel.json', import.meta.url), 'utf8'))
+  const destinations = new Map(config.rewrites.map(({ source, destination }) => [source, destination]))
+  for (const path of ['/works', '/articles', '/profile', '/works/:id', '/articles/:id']) {
+    assert.equal(destinations.get(path), `${path}.html`)
+  }
+  assert.equal(destinations.get('/sword'), '/sword/index.html')
+  assert.equal(destinations.get('/sword/'), '/sword/index.html')
+  assert.equal(config.rewrites.at(-1).source, '/:path((?!api/).*)')
+  assert.equal(config.rewrites.at(-1).destination, '/index.html')
+  assert(config.headers.some(({ source }) => source === '/api/sword'))
+  assert(config.functions['api/sword.js'])
 })
