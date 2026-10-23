@@ -1,4 +1,5 @@
 import { socialLinks } from '../constants/site.js'
+import { profileIntroduction } from '../data/profile.js'
 import { workAliases } from '../data/work-aliases.js'
 
 export const siteUrl = 'https://rurutala.net'
@@ -20,24 +21,27 @@ const pages = {
     title: '作品一覧 | るるたぁ Portfolio',
     description: 'るるたぁの作品一覧。Unity / C#のゲームから、イラスト、Live2D、3DCG、音楽、映像まで、制作した作品をまとめています。',
     path: '/works',
-    image: '/ogp/works.jpg',
-    imageAlt: 'るるたぁのゲーム・イラスト・Live2D作品',
+    image: '/profile.webp',
+    imageAlt: 'るるたぁのアイコン',
+    twitterCard: 'summary',
     type: 'website',
   },
   articles: {
     title: '記事一覧 | るるたぁ Portfolio',
     description: 'るるたぁの制作ノートと活動のお知らせ。創作を通じて考えたことや、ゲーム・イラストなどの制作記録を綴っています。',
     path: '/articles',
-    image: '/ogp/articles.jpg',
-    imageAlt: 'るるたぁの制作ノートとお知らせ',
+    image: '/profile.webp',
+    imageAlt: 'るるたぁのアイコン',
+    twitterCard: 'summary',
     type: 'website',
   },
   profile: {
     title: 'プロフィール | るるたぁ Portfolio',
-    description: 'ゲームも、絵も、音も。さまざまな創作に取り組む「るるたぁ」のプロフィール。これまでの活動や使用ツール、SNS・連絡先を紹介しています。',
+    description: profileIntroduction.join(' '),
     path: '/profile',
-    image: '/ogp/profile.jpg',
-    imageAlt: 'るるたぁのプロフィールアイコン',
+    image: '/profile.webp',
+    imageAlt: 'るるたぁのアイコン',
+    twitterCard: 'summary',
     type: 'profile',
   },
 }
@@ -65,7 +69,7 @@ export function getSeoData(route, work, article) {
       title: `${work.title} | るるたぁ Works`,
       description: description(work.description || work.subtitle || `${work.title}。るるたぁの${category || '創作'}作品。`),
       path: `/works/${work.id}`,
-      image: absoluteUrl(detailImage(work.coverImage, pages.works.image)),
+      image: absoluteUrl(detailImage(work.coverImage, '/ogp/works.jpg')),
       imageAlt: `${work.title} / るるたぁの作品`,
       type: 'article',
     }
@@ -75,7 +79,7 @@ export function getSeoData(route, work, article) {
       title: `${article.title} | るるたぁ Articles`,
       description: description(article.excerpt || article.title),
       path: `/articles/${article.id}`,
-      image: absoluteUrl(article.coverImage || pages.articles.image),
+      image: absoluteUrl(article.coverImage || '/ogp/articles.jpg'),
       imageAlt: `${article.title} / るるたぁの記事`,
       type: 'article',
     }
@@ -97,7 +101,7 @@ export function getSeoMeta(seo) {
     ['property', 'og:image', seo.image],
     ['property', 'og:image:alt', seo.imageAlt],
     ['property', 'og:locale', 'ja_JP'],
-    ['name', 'twitter:card', 'summary_large_image'],
+    ['name', 'twitter:card', seo.twitterCard || 'summary_large_image'],
     ['name', 'twitter:site', '@rurutala_ch'],
     ['name', 'twitter:title', seo.title],
     ['name', 'twitter:description', seo.description],

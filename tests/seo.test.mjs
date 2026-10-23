@@ -3,6 +3,7 @@ import test from 'node:test'
 import { readFile } from 'node:fs/promises'
 import { applySeoToHtml, renderSeoHead } from '../plugins/seo-html.mjs'
 import { buildStructuredData, getSeoData, getSeoMeta, getSeoPages } from '../src/utils/seo.js'
+import { profileIntroduction } from '../src/data/profile.js'
 
 const work = {
   id: 'example-game',
@@ -15,9 +16,9 @@ const work = {
 }
 const route = { name: 'workDetail', id: work.id }
 
-test('the four main pages have different titles, descriptions and share images', () => {
+test('main pages have distinct copy and use the shared icon on works, articles and profile', () => {
   const pages = ['home', 'works', 'articles', 'profile'].map((name) => getSeoData({ name }))
-  for (const field of ['title', 'description', 'image', 'path']) {
+  for (const field of ['title', 'description', 'path']) {
     assert.equal(new Set(pages.map((page) => page[field])).size, 4, field)
   }
   for (const page of pages) {
@@ -25,8 +26,24 @@ test('the four main pages have different titles, descriptions and share images',
     assert.equal(meta.get('og:title'), page.title)
     assert.equal(meta.get('twitter:description'), page.description)
     assert.equal(meta.get('twitter:image'), page.image)
-    assert.equal(meta.get('twitter:card'), 'summary_large_image')
+    if (page.path === '/') {
+      assert.equal(page.image, 'https://rurutala.net/ogp/home.jpg')
+      assert.equal(meta.get('twitter:card'), 'summary_large_image')
+    } else {
+      assert.equal(page.image, 'https://rurutala.net/profile.webp')
+      assert.equal(meta.get('twitter:card'), 'summary')
+    }
   }
+})
+
+test('profile sharing uses exactly the introduction displayed on the profile page', () => {
+  const seo = getSeoData({ name: 'profile' })
+  assert.equal(seo.description, profileIntroduction.join(' '))
+  const meta = new Map(getSeoMeta(seo).map(([, key, content]) => [key, content]))
+  assert.equal(meta.get('description'), seo.description)
+  assert.equal(meta.get('og:description'), seo.description)
+  assert.equal(meta.get('twitter:description'), seo.description)
+  assert.equal(buildStructuredData(seo, { name: 'profile' })['@graph'][2].description, seo.description)
 })
 
 test('work shares use the work description and cover, including external thumbnails', () => {

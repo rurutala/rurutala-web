@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { socialLinks } from '../constants/site'
+import { profileIntroduction } from '../data/profile'
 
 const toolGroups = [
   {
@@ -136,9 +137,9 @@ export function ProfilePage() {
           <p>Profile</p>
           <h1 id="profile-title">るるたぁ</h1>
           <div className="profile-copy">
-            <p>ゲーム・イラスト・音楽など興味のある分野を横断して制作しています。</p>
-            <p>作品づくりの過程や試作の記録を、ポートフォリオと記事としてまとめています。</p>
-            <p>作品を見ていただける人を少しでも楽しませれたら嬉しいなと思います。</p>
+            {profileIntroduction.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
           </div>
           <nav className="profile-social" aria-label="SNSリンク">
             {socialLinks.map((link) => (
