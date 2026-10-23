@@ -6,15 +6,16 @@ export const siteUrl = 'https://rurutala.net'
 export const siteName = 'るるたぁ official site'
 export const creatorName = 'るるたぁ'
 const defaultDescription =
-  'るるたぁ（rurutala）のポートフォリオ。Unityでのゲーム制作をはじめ、イラスト、Live2D、3DCG、音楽、映像など、さまざまな創作を紹介しています。'
+  'るるたぁ（rurutala）の公式ポートフォリオサイト。ゲーム制作、イラスト、Live2D、3DCG、音楽、映像などの作品と活動情報を掲載しています。'
 
 const pages = {
   home: {
-    title: 'るるたぁ | rurutala Portfolio',
+    title: 'るるたぁ official site | rurutala',
     description: defaultDescription,
     path: '/',
-    image: '/ogp/home.jpg',
-    imageAlt: 'るるたぁのポートフォリオと作品',
+    image: '/profile.webp',
+    imageAlt: 'るるたぁのアイコン',
+    twitterCard: 'summary',
     type: 'website',
   },
   works: {
@@ -71,6 +72,7 @@ export function getSeoData(route, work, article) {
       path: `/works/${work.id}`,
       image: absoluteUrl(detailImage(work.coverImage, '/ogp/works.jpg')),
       imageAlt: `${work.title} / るるたぁの作品`,
+      twitterCard: 'summary_large_image',
       type: 'article',
     }
   }
@@ -79,8 +81,9 @@ export function getSeoData(route, work, article) {
       title: `${article.title} | るるたぁ Articles`,
       description: description(article.excerpt || article.title),
       path: `/articles/${article.id}`,
-      image: absoluteUrl(article.coverImage || '/ogp/articles.jpg'),
-      imageAlt: `${article.title} / るるたぁの記事`,
+      image: absoluteUrl('/profile.webp'),
+      imageAlt: 'るるたぁのアイコン',
+      twitterCard: 'summary',
       type: 'article',
     }
   }
@@ -101,7 +104,7 @@ export function getSeoMeta(seo) {
     ['property', 'og:image', seo.image],
     ['property', 'og:image:alt', seo.imageAlt],
     ['property', 'og:locale', 'ja_JP'],
-    ['name', 'twitter:card', seo.twitterCard || 'summary_large_image'],
+    ['name', 'twitter:card', seo.twitterCard || 'summary'],
     ['name', 'twitter:site', '@rurutala_ch'],
     ['name', 'twitter:title', seo.title],
     ['name', 'twitter:description', seo.description],

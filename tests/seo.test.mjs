@@ -16,7 +16,7 @@ const work = {
 }
 const route = { name: 'workDetail', id: work.id }
 
-test('main pages have distinct copy and use the shared icon on works, articles and profile', () => {
+test('all main pages use compact profile-icon cards while keeping page-specific copy', () => {
   const pages = ['home', 'works', 'articles', 'profile'].map((name) => getSeoData({ name }))
   for (const field of ['title', 'description', 'path']) {
     assert.equal(new Set(pages.map((page) => page[field])).size, 4, field)
@@ -26,14 +26,10 @@ test('main pages have distinct copy and use the shared icon on works, articles a
     assert.equal(meta.get('og:title'), page.title)
     assert.equal(meta.get('twitter:description'), page.description)
     assert.equal(meta.get('twitter:image'), page.image)
-    if (page.path === '/') {
-      assert.equal(page.image, 'https://rurutala.net/ogp/home.jpg')
-      assert.equal(meta.get('twitter:card'), 'summary_large_image')
-    } else {
-      assert.equal(page.image, 'https://rurutala.net/profile.webp')
-      assert.equal(meta.get('twitter:card'), 'summary')
-    }
+    assert.equal(page.image, 'https://rurutala.net/profile.webp')
+    assert.equal(meta.get('twitter:card'), 'summary')
   }
+  assert.equal(pages[0].title, 'るるたぁ official site | rurutala')
 })
 
 test('profile sharing uses exactly the introduction displayed on the profile page', () => {
@@ -53,6 +49,7 @@ test('work shares use the work description and cover, including external thumbna
   assert.equal(seo.image, 'https://rurutala.net/assets/PG/example.webp')
   assert.equal(seo.imageAlt, `${work.title} / るるたぁの作品`)
   assert.equal(seo.path, '/works/example-game')
+  assert.equal(new Map(getSeoMeta(seo).map(([, key, content]) => [key, content])).get('twitter:card'), 'summary_large_image')
   const external = 'https://img.youtube.com/vi/example/hqdefault.jpg'
   assert.equal(getSeoData(route, { ...work, coverImage: external }).image, external)
   const graph = buildStructuredData(seo, route, work)['@graph']
@@ -69,13 +66,23 @@ test('works without imagery or descriptions have valid, work-specific fallbacks'
   assert.equal(Array.from(getSeoData(route, { ...work, description: 'あ'.repeat(200) }).description).length, 160)
 })
 
-test('article details use their own excerpt, cover and structured data', () => {
+test('article details use their own excerpt with the compact profile-icon card', () => {
   const article = { id: 'note', title: '制作ノート', excerpt: 'この記事の概要', coverImage: '/icon/essay.webp', tags: ['Essay'] }
   const page = { name: 'articleDetail', id: article.id }
   const seo = getSeoData(page, undefined, article)
   assert.equal(seo.description, article.excerpt)
-  assert.equal(seo.image, 'https://rurutala.net/icon/essay.webp')
+  assert.equal(seo.image, 'https://rurutala.net/profile.webp')
+  assert.equal(new Map(getSeoMeta(seo).map(([, key, content]) => [key, content])).get('twitter:card'), 'summary')
   assert.equal(buildStructuredData(seo, page, undefined, article)['@graph'].at(-1)['@type'], 'Article')
+})
+
+test('unrecognized and missing-detail routes also fall back to the original compact site card', () => {
+  for (const name of ['unknown', 'workDetail', 'articleDetail']) {
+    const seo = getSeoData({ name })
+    assert.equal(seo.image, 'https://rurutala.net/profile.webp')
+    assert.equal(seo.twitterCard, 'summary')
+    assert.equal(seo.title, 'るるたぁ official site | rurutala')
+  }
 })
 
 test('all detail pages and legacy work URLs are generated with canonical metadata', () => {
