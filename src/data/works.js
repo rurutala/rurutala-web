@@ -128,6 +128,12 @@ export const works = [
         },
       ],
     },
+    sections: [
+      {
+        heading: 'メモ',
+        body: '画力が上がったので改めて作成しました！\n揺れや瞳孔の工夫など良く見えるように調整しております。',
+      },
+    ],
   }),
   createWork({
     id: 'color-connect',
@@ -697,8 +703,8 @@ export const works = [
   createWork({
     id: 'rapid-mv',
     title: 'ラピッド',
-    subtitle: '',
-    description: '',
+    subtitle: 'アニメーションのコマ割りを担当しました。',
+    description: 'アニメーションのコマ割りを担当しました。',
     tags: ['Movie'],
     publishedAt: '2025-08-25',
     dateLabel: '2025/7/ ~ 2025/8/25',
@@ -714,6 +720,12 @@ export const works = [
         },
       ],
     },
+    sections: [
+      {
+        heading: '概要',
+        body: '基準となるアニメーションのコマ割りを担当しました。\n映像としていい感じになる動きを模索し精査していくことが大変でした。\n主にミクちゃんを担当しています。',
+      },
+    ],
   }),
   createWork({
     id: 'illust-rua-1',
