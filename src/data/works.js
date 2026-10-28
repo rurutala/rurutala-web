@@ -943,6 +943,25 @@ export const works = [
     },
   }),
   createWork({
+    id: 'illust-2026-10-summary',
+    title: '10月イラストまとめ',
+    subtitle: '2026年の10月のイラスト集',
+    description: '2026年の10月のイラスト集',
+    tags: [workTags[1]],
+    publishedAt: '2026-10-31',
+    dateLabel: '2026/10/31',
+    sortDate: '2026-10-31',
+    recommendedRank: 204,
+    coverImagePosition: 'center 20%',
+    media: {
+      images: [
+        asset('ILLUST/ILLUST_2026_10/1.webp'),
+        asset('ILLUST/ILLUST_2026_10/2.webp'),
+        asset('ILLUST/ILLUST_2026_10/3.webp'),
+      ],
+    },
+  }),
+  createWork({
     id: 'illust-2026-09-summary',
     title: '9月イラストまとめ',
     subtitle: '2026年の9月のイラスト集',
