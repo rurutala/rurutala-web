@@ -960,6 +960,12 @@ export const works = [
         asset('ILLUST/ILLUST_2026_10/3.webp'),
       ],
     },
+    sections: [
+      {
+        heading: 'メモ',
+        body: '4,000いいね！うれしい！！！！',
+      },
+    ],
   }),
   createWork({
     id: 'illust-2026-09-summary',
