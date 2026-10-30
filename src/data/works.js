@@ -958,6 +958,7 @@ export const works = [
         asset('ILLUST/ILLUST_2026_10/1.webp'),
         asset('ILLUST/ILLUST_2026_10/2.webp'),
         asset('ILLUST/ILLUST_2026_10/3.webp'),
+        asset('ILLUST/ILLUST_2026_10/4.webp'),
       ],
     },
     sections: [
