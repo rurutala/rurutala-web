@@ -25,8 +25,8 @@ export class PhonePeer {
         }
         const offer = await offerResponse.json();
         if (this.closed) { return; }
-        // Host candidates only: same LAN. No STUN/TURN service, video, audio, or sensor relay.
-        this.connection = new RTCPeerConnection({ iceServers: [] });
+        // STUN helps discover direct routes across networks; no TURN relay is configured.
+        this.connection = new RTCPeerConnection({ iceServers: [{ urls: "stun:stun.cloudflare.com:3478" }] });
         this.connection.ondatachannel = ({ channel }) => {
             if (!["sword-sensors", "sword-control"].includes(channel.label)) {
                 channel.close();
@@ -52,8 +52,9 @@ export class PhonePeer {
         };
         await this.connection.setRemoteDescription({ type: "offer", sdp: offer.Sdp });
         await this.connection.setLocalDescription(await this.connection.createAnswer());
-        await new Promise((resolve, reject) => {
-            const timer = setTimeout(() => { cleanup(); reject(new Error("LANの接続情報を取得できません。")); }, 7000);
+        await new Promise(resolve => {
+            // Continue with gathered candidates if STUN is unreachable.
+            const timer = setTimeout(() => { cleanup(); resolve(); }, 15000);
             const check = () => { if (this.connection.iceGatheringState === "complete") { cleanup(); resolve(); } };
             const cleanup = () => { clearTimeout(timer); this.connection.removeEventListener("icegatheringstatechange", check); };
             this.connection.addEventListener("icegatheringstatechange", check);
@@ -90,3 +91,4 @@ export class PhonePeer {
         this.onState("closed");
     }
 }
+
